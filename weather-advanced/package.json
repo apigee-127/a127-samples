@@ -1,0 +1,38 @@
+{
+  "name": "weather-sample",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "My new Apigee 127 Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "3.x.x",
+    "a127-magic": "",
+    "volos-cache-apigee": "",
+    "volos-cache-memory": "",
+    "volos-cache-redis": "",
+    "volos-oauth-apigee": "",
+    "volos-oauth-redis": "",
+    "volos-quota-apigee": "",
+    "volos-quota-memory": "",
+    "volos-quota-redis": "",
+    "volos-management-apigee": "",
+    "volos-analytics-apigee": "",
+    "volos-analytics-common": "",
+    "request": ""
+  },
+  "devDependencies": {
+    "should": "3.1.x"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "api": {
+    "name": "weather-sample",
+    "basePath": "/weather-sample",
+    "docsPath": "/docs",
+    "main": "app.js"
+  }
+}
