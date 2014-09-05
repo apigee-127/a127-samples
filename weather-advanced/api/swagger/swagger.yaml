@@ -6,7 +6,7 @@ host: localhost
 basePath: / 
 schemes:
 # remove http before deploying to production
-  - http
+  - http  
   - https
 consumes:
   - application/json
@@ -21,10 +21,10 @@ x-volos-resources:
     options:
       key: *apigeeProxyKey
       uri: *apigeeProxyUri
-      proxy: WeatherExample,
-      bufferSize: 4,
-      flushInterval: 5,
-      batchSize: 2
+      proxy: b10f10b10
+      bufferSize: 10
+      flushInterval: 10
+      batchSize: 10
   cache:
     provider: volos-cache-memory
     options:
