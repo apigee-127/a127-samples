@@ -1,22 +1,23 @@
 swagger: 2.0
 info:
   version: "0.0.1"
-  title: "Advanced OpenWeatherMap API Example with Volos.js OAuth2, Caching and Quota"
-host: "localhost"
-basePath: "/" 
+  title: Advanced OpenWeatherMap API Example with Volos.js OAuth2, Caching and Quota
+host: localhost
+basePath: / 
 schemes:
-  - "http"
-  - "https"
+# remove http before deploying to production
+  - http
+  - https
 consumes:
-  - "application/json"
+  - application/json
 produces:
-  - "application/json"
+  - application/json
 x-a127-config:
   apigeeProxyKey: &apigeeProxyKey CONFIGURED
   apigeeProxyUri: &apigeeProxyUri CONFIGURED
 x-volos-resources:
   analytics:
-    provider: "volos-analytics-apigee"
+    provider: volos-analytics-apigee
     options:
       key: *apigeeProxyKey
       uri: *apigeeProxyUri
@@ -60,23 +61,23 @@ paths:
     x-volos-apply:
       analytics: {}
     get:
-      description: "Returns current weather in the specified city to the caller"
+      description: Returns current weather in the specified city to the caller
       operationId: getWeatherByCity
       parameters:
         - name: city
           in: query
-          description: "The city you want weather for in the form city,state,country"
+          description: The city you want weather for in the form `city,state,country`
           required: true
-          type: "string"
+          type: string
       responses:
         "200":
-          description: "Success"
+          description: Success
           schema: 
-            $ref: "#/definitions/WeatherResponse"
+            $ref: WeatherResponse
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: ErrorResponse
   /weather_quota:
     x-swagger-router-controller: weather
     x-volos-apply:
@@ -85,23 +86,23 @@ paths:
           helper: volos
           function: quotaHelper
     get:
-      description: "Returns current weather in the specified city to the caller"
+      description: Returns current weather in the specified city to the caller
       operationId: getWeatherByCity
       parameters:
         - name: city
           in: query
-          description: "The city you want weather for in the form city,state,country"
+          description: The city you want weather for in the form `city,state,country`
           required: true
-          type: "string"
+          type: string
       responses:
         "200":
-          description: "Success"
+          description: Success
           schema: 
-            $ref: "#/definitions/WeatherResponse"
+            $ref: WeatherResponse
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: ErrorResponse
   /weather_cached:
     x-swagger-router-controller: weather
     x-volos-apply:
@@ -110,121 +111,121 @@ paths:
           helper: volos
           function: cacheKey
     get:
-      description: "Returns current weather in the specified city to the caller"
+      description: Returns current weather in the specified city to the caller
       operationId: getWeatherByCity
       parameters:
         - name: city
           in: query
-          description: "The city you want weather for in the form city,state,country"
+          description: The city you want weather for in the form city,state,country
           required: true
-          type: "string"
+          type: string
       responses:
         "200":
-          description: "Success"
+          description: Success
           schema: 
-            $ref: "#/definitions/WeatherResponse"
+            $ref: WeatherResponse
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: ErrorResponse
   /weather_secure:
     x-swagger-router-controller: weather
     x-volos-authorizations:
       oauth2: {}
     get:
-      description: "Returns current weather in the specified city to the caller"
+      description: Returns current weather in the specified city to the caller
       operationId: getWeatherByCity
       parameters:
         - name: city
           in: query
-          description: "The city you want weather for in the form city,state,country"
+          description: The city you want weather for in the form city,state,country
           required: true
-          type: "string"
+          type: string
       responses:
         "200":
-          description: "Success"
+          description: Success
           schema: 
-            $ref: "#/definitions/WeatherResponse"
+            $ref: WeatherResponse
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: ErrorResponse
 definitions:
   WeatherResponse:
     properties: 
       base: 
-        type: "string"
+        type: string
       clouds: 
-        type: "object"
+        type: object
         properties: 
           all: 
-            type: "number"
+            type: number
       cod: 
-        type: "number"
+        type: number
       coord: 
-        type: "object"
+        type: object
         properties: 
           lat: 
-            type: "number"
+            type: number
           lon: 
-            type: "number"
+            type: number
       dt: 
-        type: "number"
+        type: number
       id: 
-        type: "number"
+        type: number
       main: 
-        type: "object"
+        type: object
         properties: 
           humidity: 
-            type: "number"
+            type: number
           pressure: 
-            type: "number"
+            type: number
           temp_max: 
-            type: "number"
+            type: number
           temp_min: 
-            type: "number"
+            type: number
           temp: 
-            type: "number"
+            type: number
       name: 
-        type: "string"
+        type: string
       sys: 
-        type: "object"
+        type: object
         properties: 
           country: 
-            type: "string"
+            type: string
           id: 
-            type: "number"
+            type: number
           message: 
-            type: "number"
+            type: number
           sunrise: 
-            type: "number"
+            type: number
           sunset: 
-            type: "number"
+            type: number
           type: 
-            type: "number"
+            type: number
       weather: 
-        type: "array"
+        type: array
         items: 
-          type: "object"
+          type: object
           properties: 
             description: 
-              type: "string"
+              type: string
             icon: 
-              type: "string"
+              type: string
             id: 
-              type: "number"
+              type: number
             main: 
-              type: "string"
+              type: string
       wind: 
-        type: "object"
+        type: object
         properties: 
           deg: 
-            type: "number"
+            type: number
           speed: 
-            type: "number"
+            type: number
   ErrorResponse:
     required:
-      - "message"
+      - message
     properties:
       message:
-        type: "string"
+        type: string
