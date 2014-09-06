@@ -1,7 +1,7 @@
 swagger: 2.0
 info:
   version: "0.0.1"
-  title: Advanced OpenWeatherMap API Example with Volos.js OAuth2, Caching and Quota
+  title: Advanced OpenWeatherMap API Example with Volos.js OAuth2, Caching, Quota and Analytics
 host: localhost
 basePath: / 
 schemes:
@@ -21,9 +21,9 @@ x-volos-resources:
     options:
       key: *apigeeProxyKey
       uri: *apigeeProxyUri
-      proxy: b10f10b10
-      bufferSize: 10
-      flushInterval: 10
+      proxy: remoteWeatherProxy
+      bufferSize: 100
+      flushInterval: 2000
       batchSize: 10
   cache:
     provider: volos-cache-memory
@@ -66,7 +66,7 @@ paths:
       parameters:
         - name: city
           in: query
-          description: The city you want weather for in the form `city,state,country`
+          description: The city you want weather for in the form [city,state,country]
           required: true
           type: string
       responses:
@@ -81,6 +81,7 @@ paths:
   /weather_quota:
     x-swagger-router-controller: weather
     x-volos-apply:
+      analytics: {}
       quota: 
         key:
           helper: volos
@@ -91,7 +92,7 @@ paths:
       parameters:
         - name: city
           in: query
-          description: The city you want weather for in the form `city,state,country`
+          description: The city you want weather for in the form [city,state,country]
           required: true
           type: string
       responses:
@@ -106,6 +107,7 @@ paths:
   /weather_cached:
     x-swagger-router-controller: weather
     x-volos-apply:
+      analytics: {}
       cache:
         key:
           helper: volos
@@ -116,7 +118,7 @@ paths:
       parameters:
         - name: city
           in: query
-          description: The city you want weather for in the form city,state,country
+          description: The city you want weather for in the form [city,state,country]
           required: true
           type: string
       responses:
@@ -130,6 +132,8 @@ paths:
             $ref: ErrorResponse
   /weather_secure:
     x-swagger-router-controller: weather
+    x-volos-apply:
+      analytics: {}
     x-volos-authorizations:
       oauth2: {}
     get:
@@ -138,7 +142,7 @@ paths:
       parameters:
         - name: city
           in: query
-          description: The city you want weather for in the form city,state,country
+          description: The city you want weather for in the form [city,state,country]
           required: true
           type: string
       responses:
