@@ -28,17 +28,61 @@ $ a127 project start
 ```bash
 $ curl http://localhost:10010/weather?city=Kinston,NC
 ```
+When you hit this API you will see one line in the console from `a127 project start` every time is run:
+
+    Executing request: http://api.openweathermap.org/data/2.5/weather?q=Kinston,NC&units=imperial
 
 ### Cached (10s TTL) API call to OpenWeatherMap API:
 ```bash
 $ curl http://localhost:10010/weather_cached?city=Kinston,NC
 ```
+When you hit this API you will see one output like the folloiwng in the console from `a127 project start`:
+
+    Executing request: http://api.openweathermap.org/data/2.5/weather?q=Kinston,NC&units=imperial
+    Cache Key: Kinston,NC
+    Executing request: http://api.openweathermap.org/data/2.5/weather?q=Kinston,NC&units=imperial
+    Cache Key: Kinston,NC
+    Cache Key: Kinston,NC
+    Cache Key: Kinston,NC
+    Cache Key: Kinston,NC
+    Executing request: http://api.openweathermap.org/data/2.5/weather?q=Kinston,NC&units=imperial
+
+You will always see `Cache Key: Kinston, NC` and you will only see `Executing request: http://api.openweathermap.org/data/2.5/weather?q=Kinston,NC&units=imperial` after the cache entry expires.
 
 ### API call to OpenWeatherMap API with a Quota (2 per minute):
 
+Execute three calls to the endpoint within one minute.  The first two will succeed, the third will fail:
+
 ```bash
 $ curl http://localhost:10010/weather_quota?city=Kinston,NC
+$ curl http://localhost:10010/weather_quota?city=Kinston,NC
+$ curl http://localhost:10010/weather_quota?city=Kinston,NC
 ```
+
+Client Output: 
+
+    $ curl http://localhost:10010/weather_quota\?city\=Kinston,NC
+    Error: exceeded quota<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota-connect.js:92:15<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota.js:137:5<br> &nbsp; &nbsp;at MemoryQuotaSpi.apply (/Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/lib/memoryquota.js:88:3)<br> &nbsp; &nbsp;at Quota.apply (/Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota.js:136:14)<br> &nbsp; &nbsp;at applyQuota (/Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota-connect.js:82:14)<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota-connect.js:49:5<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/a127-magic/node_modules/volos-swagger/lib/connect-middleware.js:136:9<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-analytics-common/lib/analytics-connect.js:39:3<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/a127-magic/node_modules/volos-swagger/lib/connect-middleware.js:136:9<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/a127-magic/node_modules/volos-swagger/lib/connect-middleware.js:139:41
+
+Server Output: 
+
+    Executing request: http://api.openweathermap.org/data/2.5/weather?q=Kinston,NC&units=imperial
+    Quota Key: someKey
+    Executing request: http://api.openweathermap.org/data/2.5/weather?q=Kinston,NC&units=imperial
+    Quota Key: someKey
+    Executing request: http://api.openweathermap.org/data/2.5/weather?q=Kinston,NC&units=imperial
+    Quota Key: someKey
+    Error: exceeded quota
+        at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota-connect.js:92:15
+        at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota.js:137:5
+        at MemoryQuotaSpi.apply (/Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/lib/memoryquota.js:88:3)
+        at Quota.apply (/Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota.js:136:14)
+        at applyQuota (/Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota-connect.js:82:14)
+        at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota-connect.js:49:5
+        at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/a127-magic/node_modules/volos-swagger/lib/connect-middleware.js:136:9
+        at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-analytics-common/lib/analytics-connect.js:39:3
+        at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/a127-magic/node_modules/volos-swagger/lib/connect-middleware.js:136:9
+        at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/a127-magic/node_modules/volos-swagger/lib/connect-middleware.js:139:41
 
 ### API call to OpenWeatherMap API Using OAuth:
 
@@ -66,10 +110,16 @@ Weather Lookup, secured with OAuth:
 curl -H "Authorization: Bearer MNwqguWBakpicmV6bgsXhGL5RAqd" "http://localhost:10010/weather_secure?city=Kinston,NC"
 ```
 
-Hit the OAuth-secured API Proxy:
+Hit the OAuth-secured API Proxy with the token:
 
 ```bash
 $ curl -H "Authorization: Bearer MNwqguWBakpicmV6bgsXhGL5RAqd" "http://localhost:10010/weather_secure?city=Kinston,NC"
+```
+Hit the OAuth-secured API Proxy with an invalid token:
+
+```bash
+$ curl -H "Authorization: Bearer foobar" "http://localhost:10010/weather_secure?city=Kinston,NC"
+{"error_description":"","error":"invalid_token"}%
 ```
 
 Get a new Token:
@@ -77,3 +127,5 @@ Get a new Token:
 ```bash
 $ curl -X POST "http://localhost:10010/accesstoken" -d "grant_type=client_credentials&client_id=k6l4TO4DsnQr72LdAIZAxWVZKhXhfM5I&client_secret=tske5wxrUKZsbAbp"
 ```
+
+If you would like to see the interaction that Volos.js libraries have with Apigee Edge you can use the [Trace Tool](http://apigee.com/docs/gateway-services/content/using-trace-tool-0) and start a trace session on the `apigee-remote-proxy`.
