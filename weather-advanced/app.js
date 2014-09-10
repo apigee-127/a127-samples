@@ -87,4 +87,4 @@ function printHelp() {
 
 printHelp();
 
-console.log('try this:\ncurl http://localhost:10010/weather?city=Kinston,NC');
+console.log('try this:\ncurl http://localhost:10010/weather_secure?city=Kinston,NC');
