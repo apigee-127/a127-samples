@@ -22,14 +22,14 @@ x-volos-resources:
       key: *apigeeProxyKey
       uri: *apigeeProxyUri
       proxy: remoteWeatherProxy
-      bufferSize: 100
+      bufferSize: 1000
       flushInterval: 2000
-      batchSize: 10
+      batchSize: 100
   cache:
     provider: volos-cache-memory
     options:
       name: name
-      ttl: 10000
+      ttl: 5000
   quota:
     provider: volos-quota-memory
     options:
@@ -46,9 +46,6 @@ x-volos-resources:
         - authorization_code
         - implicit_grant
         - password
-      passwordCheck:
-        helper: volos
-        function: passwordCheck
     paths:
       note: these will be placed in the paths section
       authorize: /authorize
@@ -57,9 +54,9 @@ x-volos-resources:
       refresh: /refresh
 paths:
   /weather:
-    x-swagger-router-controller: weather
     x-volos-apply:
       analytics: {}
+    x-swagger-router-controller: weather
     get:
       description: Returns current weather in the specified city to the caller
       operationId: getWeatherByCity
@@ -132,8 +129,6 @@ paths:
             $ref: ErrorResponse
   /weather_secure:
     x-swagger-router-controller: weather
-    x-volos-apply:
-      analytics: {}
     x-volos-authorizations:
       oauth2: {}
     get:

@@ -27,11 +27,11 @@ paths:
         "200":
           description: "Success"
           schema: 
-            $ref: "#/definitions/WeatherResponse"
+            $ref: WeatherResponse
         default:
           description: "Error"
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: ErrorResponse
 definitions:
   WeatherResponse:
     properties: 

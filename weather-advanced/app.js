@@ -69,17 +69,29 @@ function printHelp() {
       return;
     }
 
-    console.log('listening on %d', PORT);
+    console.log('listening on port %d', PORT);
+    
+    console.log('\nExample curl commands:\n');    
+		console.log('---------');
+		console.log('Direct Proxy:');
+		console.log('curl http://localhost:%s/weather?city=Kinston,NC',PORT);
 
-    console.log('\nexample curl commands:\n');
+		console.log('---------');
+		console.log('try this Cached call (10s TTL):');
+		console.log('curl http://localhost:%s/weather_cached?city=Kinston,NC',PORT);
 
+		console.log('---------');
+		console.log('try this call which has a 2-per minute Quota:');
+		console.log('curl http://localhost:%s/weather_quota?city=Kinston,NC',PORT);
+
+		console.log('---------');
     console.log('Get a Client Credential Token:');
     console.log('curl -X POST "http://localhost:%s/accesstoken" -d ' +
       '"grant_type=client_credentials&client_id=%s&client_secret=%s"\n',
       PORT, encodeURIComponent(creds.clientId), encodeURIComponent(creds.clientSecret));
 
     console.log('Weather Lookup:');
-    console.log('curl -H "Authorization: Bearer %s" "http://localhost:%s/weather?city=Kinston,NC"\n',
+    console.log('curl -H "Authorization: Bearer %s" "http://localhost:%s/weather_secure?city=Kinston,NC"\n',
       creds.accessToken, PORT);
   });
 }
@@ -87,4 +99,3 @@ function printHelp() {
 
 printHelp();
 
-console.log('try this:\ncurl http://localhost:10010/weather?city=Kinston,NC');
