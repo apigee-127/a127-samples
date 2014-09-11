@@ -14,7 +14,17 @@ It has two samples:
 2) Create an Account configuration using `a127 account create`: [a127 Account Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#a127-account)
 You will need an account on Apigee Developer (free) for the advanced example.
 
-3) Once you have it cloned from git and an account created successfully with `a127 account create`:
+3) Copy config/secrets.sample.js to config/secrets.js.  Edit config/secrets.js and specify your Edge account information.  This is required by the Volos management module.
+
+```javascript
+exports.apigee = {
+  organization: 'jdoe',
+  user: 'jdoe@apigee.com',
+  password: 'mypassword'
+};
+```
+
+4) Once you have it cloned from git and an account created successfully with `a127 account create`:
 
 ```bash
 $ cd a127-samples/weather-advanced
@@ -22,7 +32,7 @@ $ npm install
 $ a127 project start
 ```
 
-4) Once you have the project started you can issue curl commands or use Postman to hit the API:
+5) Once you have the project started you can issue curl commands or use Postman to hit the API:
 
 ### Direct API call to OpenWeatherMap API:
 ```bash
