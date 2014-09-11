@@ -5,7 +5,9 @@ This is an example of an Apigee-127 project that uses Caching, Quota, OAuth and 
 # How do I use it?
 1) Clone this repository from Git: 
 
-`$ git clone https://github.com/apigee-127/a127-samples`
+```bash 
+$ git clone https://github.com/apigee-127/a127-samples
+```
 
 It has two samples:
 - Weather Basic
