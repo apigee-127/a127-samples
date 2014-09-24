@@ -1,73 +1,32 @@
 'use strict';
 
 var a127 = require('a127-magic');
-var oauth = a127.resource('oauth2');
 var express = require('express');
 var app = express();
-
-var Management = require('volos-management-apigee');
-var OAuth = require('volos-oauth-apigee');
-
-var volos = {
-  Management: Management,
-  OAuth: OAuth
-};
 
 // uncomment the following if you need to parse incoming form data
 //app.use(express.bodyParser());
 
 app.use(a127.middleware());
-app.get('/authorize', oauth.expressMiddleware().handleAuthorize());
-app.post('/accesstoken', oauth.expressMiddleware().handleAccessToken());
-app.post('/invalidate', oauth.expressMiddleware().invalidateToken());
-app.post('/refresh', oauth.expressMiddleware().refreshToken());
+var PORT = process.env.PORT || 10010;
 
-var PORT = process.env.PORT || 10010
-app.listen(PORT);
-
-/**** OAuth ****/
-var config = require('./config');
-
-/**** OAuth ****/
-
-var management = volos.Management.create(config.apigee);
-
-function createToken(management, oauth, cb) {
-
-  management.getDeveloperApp(config.devRequest.userName, config.appRequest.name, function(err, app) {
-    if (err) { cb(err); }
-
-    var tokenRequest = {
-      clientId: app.credentials[0].key,
-      clientSecret: app.credentials[0].secret
-    };
-
-    oauth.spi.createTokenClientCredentials(tokenRequest, function(err, result) {
-      if (err) { cb(err); }
-
-      var accessToken = result.access_token;
-
-      console.log('Client ID: %s', app.credentials[0].key);
-      console.log('Client Secret: %s', app.credentials[0].secret);
-      console.log('Access Token: %s', accessToken);
-
-      tokenRequest.accessToken = accessToken;
-
-      cb(null, tokenRequest);
-    });
-  });
-
-}
-
+app.listen(process.env.PORT || 10010);
+  var config = require('./config');
 
 function printHelp() {
 
-  createToken(management, oauth, function(err, creds) {
+  var config = require('./config');
+  var volos = config.volos;
+  var management = volos.Management.create(config.apigee);
+  var oauth = a127.resource('oauth2');
+
+  createToken(management, oauth, config, function(err, creds) {
     if (err) {
       console.log(err);
       console.log(err.stack);
       return;
     }
+
 
     console.log('listening on port %d', PORT);
     
@@ -96,6 +55,30 @@ function printHelp() {
   });
 }
 
+function createToken(management, oauth, config, cb) {
 
+  management.getDeveloperApp(config.devRequest.userName, config.appRequest.name, function(err, app) {
+    if (err) { cb(err); }
+
+    var tokenRequest = {
+      clientId: app.credentials[0].key,
+      clientSecret: app.credentials[0].secret
+    };
+
+    oauth.spi.createTokenClientCredentials(tokenRequest, function(err, result) {
+      if (err) { cb(err); }
+
+      var accessToken = result.access_token;
+
+      console.log('Client ID: %s', app.credentials[0].key);
+      console.log('Client Secret: %s', app.credentials[0].secret);
+      console.log('Access Token: %s', accessToken);
+
+      tokenRequest.accessToken = accessToken;
+
+      cb(null, tokenRequest);
+    });
+  });
+}
 printHelp();
 
