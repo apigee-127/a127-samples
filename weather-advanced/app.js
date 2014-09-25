@@ -8,12 +8,12 @@ var bodyParser = require('body-parser');
 // uncomment the following if you need to parse incoming form data
 app.use(bodyParser.urlencoded()); // if using Express 4.x
 app.use(bodyParser.json()); // if using Express 4.x
-
 app.use(a127.middleware());
-var PORT = process.env.PORT || 10010;
 
-app.listen(process.env.PORT || 10010);
-  var config = require('./config');
+var PORT = process.env.PORT || 10010;
+app.listen(PORT);
+
+var config = require('./config');
 
 function printHelp() {
 
