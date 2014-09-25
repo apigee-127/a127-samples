@@ -10,6 +10,7 @@ schemes:
   - https
 consumes:
   - application/json
+  - application/x-www-form-urlencoded
 produces:
   - application/json
 x-a127-config:
@@ -46,12 +47,14 @@ x-volos-resources:
         - authorization_code
         - implicit_grant
         - password
-    paths:
-      note: these will be placed in the paths section
-      authorize: /authorize
-      token: /accessToken
-      invalidate: /invalidate
-      refresh: /refresh
+      passwordCheck:
+        helper: volos
+        function: passwordCheck
+      tokenPaths:  # These will be added to your paths section for you
+        authorize: /authorize
+        token: /accesstoken
+        invalidate: /invalidate
+        refresh: /refresh
 paths:
   /weather:
     x-volos-apply:
@@ -105,7 +108,7 @@ paths:
     x-swagger-router-controller: weather
     x-volos-apply:
       analytics: {}
-      cache:
+      cache: 
         key:
           helper: volos
           function: cacheKey

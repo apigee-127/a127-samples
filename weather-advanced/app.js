@@ -3,9 +3,11 @@
 var a127 = require('a127-magic');
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser'); 
 
 // uncomment the following if you need to parse incoming form data
-//app.use(express.bodyParser());
+app.use(bodyParser.urlencoded()); // if using Express 4.x
+app.use(bodyParser.json()); // if using Express 4.x
 
 app.use(a127.middleware());
 var PORT = process.env.PORT || 10010;
