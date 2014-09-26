@@ -24,12 +24,10 @@
 'use strict';
 
 var secrets = require('./secrets');
-exports.twitter = secrets.twitter;
-exports.apigee = secrets.apigee;
-
-
 var Management = require('volos-management-apigee');
 var OAuth = require('volos-oauth-apigee');
+
+exports.apigee = secrets.apigee;
 
 exports.volos = {
   Management: Management,
