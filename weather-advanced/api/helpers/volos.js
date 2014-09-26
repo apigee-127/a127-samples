@@ -26,8 +26,15 @@
 module.exports = {
   cacheKey: cacheKey,
   passwordCheck: passwordCheck,
-  quotaHelper: quotaHelper
+  quotaHelper: quotaHelper,
+  clientIp: clientIp
 };
+
+function clientIp(req) {
+  var key = req.connection.remoteAddress;
+  console.log('clientIp Key: '+key)
+  return key;
+}
 
 function quotaHelper(req) {
   var key = 'someKey'
