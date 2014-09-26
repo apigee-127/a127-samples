@@ -23,6 +23,8 @@
  ****************************************************************************/
 'use strict';
 
+var debug = require('debug')('helpers');
+
 module.exports = {
   cacheKey: cacheKey,
   passwordCheck: passwordCheck,
@@ -32,20 +34,20 @@ module.exports = {
 
 function clientIp(req) {
   var key = req.connection.remoteAddress;
-  console.log('clientIp Key: '+key)
+  if (debug.enabled) { debug('clientIp Key: '+key); }
   return key;
 }
 
 function quotaHelper(req) {
   var key = 'someKey'
-  console.log('Quota Key: '+key)
+  if (debug.enabled) { debug('Quota Key: '+key); }
   return key;
 }
 
 function cacheKey(req) {
 // This can checn for a specific query parameter
   var key = req.swagger.params.city.value;
-  console.log('Cache Key: '+key)
+  if (debug.enabled) { debug('Cache Key: '+key); }
   return key;
 }
 
