@@ -64,7 +64,8 @@ function createToken(management, oauth, config, cb) {
 
     var tokenRequest = {
       clientId: app.credentials[0].key,
-      clientSecret: app.credentials[0].secret
+      clientSecret: app.credentials[0].secret,
+      tokenLifetime: 300000
     };
 
     oauth.spi.createTokenClientCredentials(tokenRequest, function(err, result) {
