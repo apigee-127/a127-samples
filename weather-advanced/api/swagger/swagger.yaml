@@ -46,6 +46,7 @@ x-volos-resources:
   oauth2:
     provider: volos-oauth-apigee
     options:
+      tokenLifetime: 300000
       key: *apigeeProxyKey
       uri: *apigeeProxyUri
       validGrantTypes:
@@ -163,6 +164,17 @@ paths:
           schema:
             $ref: ErrorResponse
 definitions:
+  WeatherItem:
+    type: object
+    properties: 
+      description: 
+        type: string
+      icon: 
+        type: string
+      id: 
+        type: number
+      main: 
+        type: string
   WeatherResponse:
     properties: 
       base: 
@@ -218,16 +230,7 @@ definitions:
       weather: 
         type: array
         items: 
-          type: object
-          properties: 
-            description: 
-              type: string
-            icon: 
-              type: string
-            id: 
-              type: number
-            main: 
-              type: string
+          $ref: WeatherItem
       wind: 
         type: object
         properties: 
