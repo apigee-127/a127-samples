@@ -5,22 +5,18 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser'); 
 
-// uncomment the following if you need to parse incoming form data
-app.use(bodyParser.urlencoded()); // if using Express 4.x
-app.use(bodyParser.json()); // if using Express 4.x
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
 app.use(a127.middleware());
 
 var PORT = process.env.PORT || 10010;
 app.listen(PORT);
 
-var config = require('./config');
-
 function printHelp() {
 
-  var config = require('./config');
-  var volos = config.volos;
-  var management = volos.Management.create(config.apigee);
   var oauth = a127.resource('oauth2');
+  var management = a127.resource('management');
+  var config = a127.config.load();
 
   createToken(management, oauth, config, function(err, creds) {
     if (err) {
@@ -28,7 +24,6 @@ function printHelp() {
       console.log(err.stack);
       return;
     }
-
 
     console.log('listening on port %d', PORT);
     

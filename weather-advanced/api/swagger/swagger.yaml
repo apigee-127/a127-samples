@@ -16,6 +16,9 @@ produces:
 x-a127-config:
   apigeeProxyKey: &apigeeProxyKey CONFIGURED
   apigeeProxyUri: &apigeeProxyUri CONFIGURED
+  organization: &organization CONFIGURED
+  username: &username CONFIGURED
+  password: &password CONFIGURED
 x-volos-resources:
   spikeArrest:
     provider: "volos-spikearrest-memory"
@@ -43,6 +46,12 @@ x-volos-resources:
       timeUnit: minute
       interval: 1
       allow: 2
+  management:
+    provider: volos-management-apigee
+    options:
+      organization: *organization
+      user: *username
+      password: *password
   oauth2:
     provider: volos-oauth-apigee
     options:
