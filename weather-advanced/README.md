@@ -16,17 +16,7 @@ It has two samples:
 2) Create an Account configuration using `a127 account create`: [a127 Account Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#a127-account)
 You will need an account on Apigee Developer (free) for the advanced example.
 
-3) Copy config/secrets.sample.js to config/secrets.js.  Edit config/secrets.js and specify your Edge account information.  This is required by the Volos management module.
-
-```javascript
-exports.apigee = {
-  organization: 'jdoe',
-  user: 'jdoe@apigee.com',
-  password: 'mypassword'
-};
-```
-
-4) Once you have it cloned from git and an account created successfully with `a127 account create`:
+3) Once you have it cloned from git and an account created successfully with `a127 account create`:
 
 ```bash
 $ cd a127-samples/weather-advanced
@@ -34,7 +24,7 @@ $ npm install
 $ a127 project start
 ```
 
-5) Once you have the project started you can issue curl commands or use Postman to hit the API:
+4) Once you have the project started you can issue curl commands or use Postman to hit the API:
 
 ### Direct API call to OpenWeatherMap API:
 ```bash
@@ -48,7 +38,7 @@ When you hit this API you will see one line in the console from `a127 project st
 ```bash
 $ curl http://localhost:10010/weather_cached?city=Kinston,NC
 ```
-When you hit this API you will see one output like the folloiwng in the console from `a127 project start`:
+When you hit this API you will see one output like the following in the console from `a127 project start`:
 
     Executing request: http://api.openweathermap.org/data/2.5/weather?q=Kinston,NC&units=imperial
     Cache Key: Kinston,NC
