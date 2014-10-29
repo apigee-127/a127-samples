@@ -48,8 +48,102 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+  /weather:
+    x-swagger-router-controller: weather
+    get:
+      description: Returns current weather in the specified city to the caller
+      operationId: getWeatherByCity
+      parameters:
+        - name: city
+          in: query
+          description: The city you want weather for in the form [city,state,country]
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: WeatherResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
 # complex objects have schema definitions
 definitions:
+  WeatherItem:
+    type: object
+    properties:
+      description:
+        type: string
+      icon:
+        type: string
+      id:
+        type: number
+      main:
+        type: string
+  WeatherResponse:
+    properties:
+      base:
+        type: string
+      clouds:
+        type: object
+        properties:
+          all:
+            type: number
+      cod:
+        type: number
+      coord:
+        type: object
+        properties:
+          lat:
+            type: number
+          lon:
+            type: number
+      dt:
+        type: number
+      id:
+        type: number
+      main:
+        type: object
+        properties:
+          humidity:
+            type: number
+          pressure:
+            type: number
+          temp_max:
+            type: number
+          temp_min:
+            type: number
+          temp:
+            type: number
+      name:
+        type: string
+      sys:
+        type: object
+        properties:
+          country:
+            type: string
+          id:
+            type: number
+          message:
+            type: number
+          sunrise:
+            type: number
+          sunset:
+            type: number
+          type:
+            type: number
+      weather:
+        type: array
+        items:
+          $ref: WeatherItem
+      wind:
+        type: object
+        properties:
+          deg:
+            type: number
+          speed:
+            type: number
   HelloWorldResponse:
     required:
       - message
