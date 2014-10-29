@@ -25,34 +25,10 @@ x-volos-resources:
       name: name
       ttl: 5000
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
-    get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
-      responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: HelloWorldResponse
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
   /weather:
     x-swagger-router-controller: weather
     get:
       description: Returns current weather in the specified city to the caller
-      operationId: getWeatherByCity
       parameters:
         - name: city
           in: query
