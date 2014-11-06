@@ -23,11 +23,12 @@ $ npm install
 
 3) Uncomment one of the cache providers in the a127 project swagger file with the swagger editor:
 
-- Open the Swagger editor:
+Open the Swagger editor:
 ```bash
 $ a127 project edit
 ```
-- Uncomment one provider under x-volos-resources, e.g.:
+
+Uncomment one provider under x-volos-resources, e.g.:
 
 ```yaml
 x-volos-resources:
@@ -44,12 +45,12 @@ x-volos-resources:
 
 4) Start your a127 API:
 
-#### Apigee caching
+- Apigee caching
 
-- Create an Account configuration using `a127 account create`: [a127 Account Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#a127-account)
+Create an Account configuration using `a127 account create`: [a127 Account Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#a127-account)
 You will need an account on Apigee Developer (free) for the advanced example.
 
-- Deploy your project to Apigee:
+Deploy your project to Apigee:
 
 ```bash
 $ a127 project deploy
@@ -70,28 +71,23 @@ uris:
 
 Take note of the uris that are returned. You will need these to send requests to your API later.
 
-#### Redis caching
+- Redis caching
 
-- Run the following to download Redis and create a Redis instance running on localhost:
+Run the following to download Redis and create a Redis instance running on localhost:
 
 ```bash
 $ sh redis.sh
 ``` 
 
-You can restart the Redis instance anytime by running the following from the 'redis-2.8.17' directory:
-```bash
-$ src/redis-server
-```
-
-- Start your API on localhost:
+Start your API on localhost:
 
 ```bash
 $ a127 project start
 ```
 
-#### In-memory caching
+- In-memory caching
 
-- Start your API on localhost:
+Start your API on localhost:
 
 ```bash
 $ a127 project start
@@ -99,7 +95,7 @@ $ a127 project start
 
 5) Issue curl commands or use Postman to hit the API. The first time you send the request the response will be cached. The cached response will persist for 60 seconds.
 
-#### Apigee
+- Apigee
 
 Note that you will need to use the URL provided when you ran 'a127 project deploy'
 
@@ -107,7 +103,7 @@ Note that you will need to use the URL provided when you ran 'a127 project deplo
 $ curl http://yourApigeeOrg-test.apigee.net/cache-sample/weather?city=Kinston,NC
 ```
 
-#### Redis or in-memory:
+- Redis or in-memory:
 ```bash
 $ curl http://localhost:10010/weather?city=Kinston,NC
 ```
