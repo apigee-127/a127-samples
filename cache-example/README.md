@@ -42,7 +42,11 @@ x-volos-resources:
 
 **Apigee caching:**
 
-- Create an Account configuration using `a127 account create`:
+- If you don't have an account, create one:
+```bash
+$ a127 account create
+```
+
 - Deploy your project to Apigee:
 ```bash
 $ a127 project deploy
