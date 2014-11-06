@@ -46,7 +46,6 @@ x-volos-resources:
 4) Start your a127 API:
 
 - Apigee caching
-
 Create an Account configuration using `a127 account create`: [a127 Account Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#a127-account)
 You will need an account on Apigee Developer (free) for the advanced example.
 
@@ -72,7 +71,6 @@ uris:
 Take note of the uris that are returned. You will need these to send requests to your API later.
 
 - Redis caching
-
 Run the following to download Redis and create a Redis instance running on localhost:
 
 ```bash
@@ -86,7 +84,6 @@ $ a127 project start
 ```
 
 - In-memory caching
-
 Start your API on localhost:
 
 ```bash
@@ -96,7 +93,6 @@ $ a127 project start
 5) Issue curl commands or use Postman to hit the API. The first time you send the request the response will be cached. The cached response will persist for 60 seconds.
 
 - Apigee
-
 Note that you will need to use the URL provided when you ran 'a127 project deploy'
 
 ```bash
