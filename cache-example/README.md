@@ -20,11 +20,11 @@ $ npm install
 ```
 
 #### 3) Uncomment one of the cache providers in the a127 project swagger file with the swagger editor
-    - Open the Swagger editor:
+- Open the Swagger editor:
 ```bash
 $ a127 project edit
 ```
-    - Uncomment one provider under x-volos-resources, e.g.:
+- Uncomment one provider under x-volos-resources, e.g.:
 ```yaml
 x-volos-resources:
   #Defines our cache
@@ -85,11 +85,13 @@ The first time you send the request the response will be cached. The cached resp
 **Apigee caching:**
 
 Note that you will need to use the URL provided when you ran 'a127 project deploy'
+
 ```bash
 $ curl http://yourApigeeOrg-test.apigee.net/cache-sample/weather?city=Kinston,NC
 ```
 
 **Redis or in-memory caching:**
+
 ```bash
 $ curl http://localhost:10010/weather?city=Kinston,NC
 ```
