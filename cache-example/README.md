@@ -8,28 +8,23 @@ Caching API responses is an easy way to improve the performance of your a127 API
 
 ## How do I use it?
 
-1) Clone this repository from Git: 
-
+#### 1) Clone this repository from Git: 
 ```bash 
 $ git clone https://github.com/apigee-127/a127-samples
 ```
 
-2) Install npm dependencies for the project:
-
+#### 2) Install npm dependencies for the project:
 ```bash
 $ cd a127-samples/cache-example
 $ npm install
 ```
 
-3) Uncomment one of the cache providers in the a127 project swagger file with the swagger editor:
-
-Open the Swagger editor:
+#### 3) Uncomment one of the cache providers in the a127 project swagger file with the swagger editor:
+    - Open the Swagger editor:
 ```bash
 $ a127 project edit
 ```
-
-Uncomment one provider under x-volos-resources, e.g.:
-
+    - Uncomment one provider under x-volos-resources, e.g.:
 ```yaml
 x-volos-resources:
   #Defines our cache
@@ -43,20 +38,15 @@ x-volos-resources:
         ttl: 30000
 ```
 
-4) Start your a127 API:
+####4) Start your a127 API:
 
-- Apigee caching
-Create an Account configuration using `a127 account create`: [a127 Account Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#a127-account)
-You will need an account on Apigee Developer (free) for the advanced example.
-
-Deploy your project to Apigee:
-
+**Apigee caching**
+- Create an Account configuration using `a127 account create`:
+- Deploy your project to Apigee:
 ```bash
 $ a127 project deploy
 ```
-
 Once your project is successfully deployed to Apigee, you will see a response like this:
-
 ```bash
 name: cache-sample
 environment: test
@@ -67,39 +57,36 @@ uris:
   - 'http://amuramoto-test.apigee.net/cache-sample'
   - 'https://amuramoto-test.apigee.net/cache-sample'
 ```
-
 Take note of the uris that are returned. You will need these to send requests to your API later.
 
-- Redis caching
-Run the following to download Redis and create a Redis instance running on localhost:
+**Redis caching**
 
+- Run the following to download Redis and create a Redis instance running on localhost:
 ```bash
 $ sh redis.sh
 ``` 
-
-Start your API on localhost:
-
+- Start your API on localhost:
 ```bash
 $ a127 project start
 ```
-
 - In-memory caching
 Start your API on localhost:
-
 ```bash
 $ a127 project start
 ```
 
-5) Issue curl commands or use Postman to hit the API. The first time you send the request the response will be cached. The cached response will persist for 60 seconds.
+####5) Issue curl commands or use Postman to hit the API.
 
-- Apigee
+The first time you send the request the response will be cached. The cached response will persist for 60 seconds.
+
+**Apigee caching**
+
 Note that you will need to use the URL provided when you ran 'a127 project deploy'
-
 ```bash
 $ curl http://yourApigeeOrg-test.apigee.net/cache-sample/weather?city=Kinston,NC
 ```
 
-- Redis or in-memory:
+**Redis or in-memory caching**
 ```bash
 $ curl http://localhost:10010/weather?city=Kinston,NC
 ```
