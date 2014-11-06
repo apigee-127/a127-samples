@@ -2,6 +2,8 @@
 
 This is an example Apigee-127 project that shows you how to use response caching. API responses can be cached in-memory, with Redis, or with Apigee.
 
+This example also uses a helper function in /helpers/volos.js to parse the 'city' parameter from the API request, and uses it as the cache key.
+
 ## What is caching?
 
 Caching API responses is an easy way to improve the performance of your a127 API by returning the cached response or common requests, rather than forming a new response every time the same request is executed. This is particularly helpful if your API calls other third-party APIs or data sources to construct its responses.
