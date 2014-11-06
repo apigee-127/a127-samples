@@ -59,8 +59,8 @@ revision: 2
 state: deployed
 basePath: /
 uris:
-  - 'http://amuramoto-test.apigee.net/cache-sample'
-  - 'https://amuramoto-test.apigee.net/cache-sample'
+  - 'http://yourApigeeOrg-test.apigee.net/cache-sample'
+  - 'https://yourApigeeOrg-test.apigee.net/cache-sample'
 ```
 Take note of the uris that are returned. You will need these to send requests to your API later.
 
