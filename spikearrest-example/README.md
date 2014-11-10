@@ -8,8 +8,6 @@ A spike arrest policy protects against traffic spikes and offers protection agai
 
 >Note: Unlike some other Volos.js modules that have "in-memory", Redis, and Apigee modes, spike arrest only has an "in-memory" mode. 
 
-For more detailed information about using this policy, see "[How does spike arrest work?](#howdoes)" below.
-
 ## How do I use it?
 
 #### 1) Clone this repository from Git
@@ -89,10 +87,10 @@ x-volos-resources:
     options:
       timeUnit: "minute"
       allow: 10
-      #buffer: 3
+      #bufferSize: 3
 ````
 
->This configuration says: "Allow 10 API calls in a one-minute interval. If you call the API repeatedly, you'll see that one call goes through every 6 seconds (60/10). If you try to call the API quicker than every 6 seconds, you'll receive a 503 response with the error message: `Error: SpikeArrest engaged`. The buffer is commented out by default. See "[Adding a buffer"](#addingbuffer)
+>This configuration says: "Allow 10 API calls in a one-minute interval." If you call the API repeatedly, you'll see that one call goes through every 6 seconds (60/10). If you try to call the API quicker than every 6 seconds, you'll receive a 503 response with the error message: `Error: SpikeArrest engaged`. The bufferSize is commented out by default. See "[Adding a buffer"](#addingbuffer).
 
 Next, we apply spike arrest to a path, where it will be invoked whenever the path is called:
 
@@ -128,7 +126,7 @@ Quota policies configure the number of request messages that a client app is all
 
 Use a quota policy to enforce business contracts or SLAs with developers and partners, rather than for operational traffic management. Use spike arrest to protect against sudden spikes in API traffic. 
 
-## <a name="howdoes"></a>How does spike arrest work?]
+## <a name="howdoes"></a>How does spike arrest work?
 
 Think of Spike Arrest as a way to generally protect against traffic spikes rather than as a way to limit traffic to a specific number of requests. Your APIs and backend can handle a certain amount of traffic, and the spike arrest policy helps you smooth traffic to the general amounts you want.
 
@@ -195,7 +193,7 @@ If the number of requests exeeds the limit within the specified time interval, s
 
 ### <a name="addingbuffer"></a>Adding a buffer
 
-You have an option of adding a buffer to the policy. In the example's `/api/swagger/swagger.yaml` file, uncomment the line `buffer: 10`, and re-run the example. You'll see that the API does not return an error immediately when you exceed the spike arrest limit. Instead, requests are buffered (up to the number specified), and the buffered requests are processed as soon as the next appropriate execution window is available. The default buffer is 0.
+You have an option of adding a buffer to the policy. In the example's `/api/swagger/swagger.yaml` file, uncomment the line `bufferSize: 10`, and re-run the example. You'll see that the API does not return an error immediately when you exceed the spike arrest limit. Instead, requests are buffered (up to the number specified), and the buffered requests are processed as soon as the next appropriate execution window is available. The default bufferSize is 0.
 
 ````bash
     x-volos-resources:
@@ -204,13 +202,27 @@ You have an option of adding a buffer to the policy. In the example's `/api/swag
         provider: "volos-spikearrest-memory"
         options:
           timeUnit: "minute"
-          buffer: 10
+          bufferSize: 3
           allow: 30
 ````
 
 ### Applying spike arrest to paths or operations
 
 You can apply spike arrest to paths or operations:
+
+````yaml
+paths:
+  /weather:
+    x-volos-apply:
+      spikearrest: {}
+    x-swagger-router-controller: weather
+    get:
+      #x-volos-apply:
+        #spikearrest: {}
+      description: "Returns current weather in the specified city to the caller"
+````
+
+You can add two optional configurations (key and weight) to spike arrest when you apply it:
 
 ````yaml
 paths:
@@ -224,11 +236,10 @@ paths:
       description: "Returns current weather in the specified city to the caller"
 ````
 
-You can add two optional configurations to spike arrest when you apply it:
 
 * **key** - (optional, default = '_default') Identifies the spike arrest "bucket". This is a string that may be set to any value. Each key locates a single bucket, which maintains separate execution windows from other buckets.
 
-* **weight** - (optional, default = 1) Specifies the weighting defined for each message. Message weight is used to modify the impact of a single request on the calculation of the spike arrest limit. For example, if the Spike Arrest Rate is 10pm, and an app submits requests with weight 2, then only 5 messages per minute are permitted from that app. In some advanced cases, API providers may want to assign different weights to different API calls.
+* **weight** - (optional, default = 1) Specifies the weighting defined for each message. Message weight is used to modify the impact of a single request on the calculation of the spike arrest limit. For example, if the Spike Arrest Rate is 10 calls per minute, and a path or operation with weight 2 is called, then only 5 messages per minute are permitted from that path or operation. In some advanced cases, API providers may want to assign different weights to different API calls.
 
 
 
