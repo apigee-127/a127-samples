@@ -1,12 +1,22 @@
+
+* [What is spike arrest?](#whatis)
+* [How do I use it?](#howdo)
+* [Deploying your API](#deploy)
+* [Run the API on Apigee](#runapigee)
+* [About the default configuration](#abouthe)
+* [What's the difference between spike arrest and quota](#difference)
+* [How does spike arrest work?](#howdoes)
+* [Advanced configuration](#advanced)
+
 ## What is this?
 
 This is an example Apigee-127 project that shows you how to add a spike arrest policy to your API. 
 
-## What is spike arrest?
+## <a name="whatis"></a>What is spike arrest?
 
 A spike arrest policy protects against traffic spikes and offers protection against threats such as denial of service attacks. It throttles the number of requests an API can process by "smoothing" the number of calls that can be processed over a specified time interval. 
 
-## How do I use it?
+## <a name="howdo"></a>How do I use it?
 
 #### 1) Clone this repository from Git
 ```bash 
@@ -36,7 +46,7 @@ $ curl http://localhost:10010/weather?city=Kinston,NC
 
 If you kept the default configuration, you'll notice that you are only able to call the API about once every 6 seconds. This is because the policy allows 10 calls in a one-minute interval, and it "smooths" the calls out so they are evenly distributed through the interval. For details on the algorithm involved, see  "[How does spike arrest work?](#howdoes)" below.
 
-## Deploying your API
+## <a name="deploy"></a>Deploying your API
 
 You can deploy your spike-arrest protected API to Apigee or another service, and it will function the same as it does locally. 
 
@@ -65,7 +75,7 @@ uris:
 ```
 Take note of the uris that are returned. You will need these to send requests to your API later.
 
-## Run the API on Apigee
+## <a name="runapigee"></a>Run the API on Apigee
 
 Note that you will need to use the URL provided when you ran 'a127 project deploy'
 
@@ -73,7 +83,7 @@ Note that you will need to use the URL provided when you ran 'a127 project deplo
 $ curl http://yourApigeeOrg-test.apigee.net/spikearrest-sample/weather?city=Kinston,NC
 ```
 
-## About the default example configuration
+## <a name="aboutthe"></a>About the default example configuration
 
 Here's the default configuration for the spike arrest sample. Like with all Apigee-127 policies, you have to add it first, then apply it. 
 
@@ -100,7 +110,7 @@ Next, we apply spike arrest to a path, where it will be invoked whenever the pat
 paths:
   /weather:
     x-volos-apply:
-      spikearrest: {key: "foo", weight: 2}
+      spikearrest: {}
     x-swagger-router-controller: weather
     get:
       #x-volos-apply:
@@ -118,11 +128,11 @@ paths:
     x-swagger-router-controller: weather
     get:
       x-volos-apply:
-        spikearrest: {key: "foo", weight: 2}
+        spikearrest: {}
       description: "Returns current weather in the specified city to the caller"
 ````
 
-## What's the difference between spike arrest and quota?
+## <a name="difference"></a>What's the difference between spike arrest and quota?
 
 Quota policies configure the number of request messages that a client app is allowed to submit to an API over the course of an hour, day, week, or month. The quota policy enforces consumption limits on client apps by maintaining a distributed counter that tallies incoming requests. 
 
@@ -188,7 +198,7 @@ The configuration looks like this:
 
 ### When the limit is exceeded
 
-If the number of requests exeeds the limit within the specified time interval, spike alert returns this error message in a 503 response:
+If the number of requests exceeds the limit within the specified time interval, spike alert returns this error message in a 503 response:
 
     Error: SpikeArrest engaged
 
@@ -223,6 +233,8 @@ paths:
         #spikearrest: {}
       description: "Returns current weather in the specified city to the caller"
 ````
+
+## <a name="advanced"></a>Advanced configuration
 
 You can add two optional configurations (key and weight) to spike arrest when you apply it:
 
