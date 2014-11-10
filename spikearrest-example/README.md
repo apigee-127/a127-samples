@@ -1,4 +1,5 @@
 
+* [What is this?](#whatisthis)
 * [What is spike arrest?](#whatis)
 * [How do I use it?](#howdo)
 * [Deploying your API](#deploy)
@@ -6,7 +7,7 @@
 * [About the default configuration](#abouthe)
 * [Deep dive](#deepdive)
 
-## What is this?
+## <a name="whatisthis"></a>What is this?
 
 This is an example Apigee-127 project that shows you how to add a spike arrest policy to your API. 
 
