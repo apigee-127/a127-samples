@@ -10,14 +10,6 @@
   "dependencies": {
     "express": "3.x.x",
     "a127-magic": "",
-    "volos-cache-apigee": "",
-    "volos-cache-memory": "",
-    "volos-cache-redis": "",
-    "volos-oauth-apigee": "",
-    "volos-oauth-redis": "",
-    "volos-quota-apigee": "",
-    "volos-quota-memory": "",
-    "volos-quota-redis": "",
     "request": "",
     "volos-spikearrest-common": "",
     "volos-spikearrest-memory": ""

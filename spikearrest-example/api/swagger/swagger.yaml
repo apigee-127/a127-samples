@@ -18,13 +18,15 @@ x-volos-resources:
     options:
       timeUnit: "minute"
       allow: 20 
-      buffer: 10
+      #buffer: 3 
 paths:
   /weather:
     x-swagger-router-controller: weather
+    x-volos-apply:
+        spikearrest: {}
     get:
-      x-volos-apply:
-        spikearrest: {key: "foo", weight: 2}
+      #x-volos-apply:
+      #  spikearrest: {}
       description: "Returns current weather in the specified city to the caller"
       operationId: getWeatherByCity
       parameters:
@@ -95,19 +97,6 @@ definitions:
             type: "number"
           type: 
             type: "number"
-      weather: 
-        type: "array"
-        items: 
-          type: "object"
-          properties: 
-            description: 
-              type: "string"
-            icon: 
-              type: "string"
-            id: 
-              type: "number"
-            main: 
-              type: "string"
       wind: 
         type: "object"
         properties: 
