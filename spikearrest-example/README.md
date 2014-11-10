@@ -100,7 +100,9 @@ x-volos-resources:
       #bufferSize: 3
 ````
 
-This configuration allows 10 API calls per one-minute interval. Actually, the feature "smooths" the number of allowed calls evenly through the interval. If you call the API repeatedly, you'll see that one call goes through every 6 seconds (60/10). If you try to call the API quicker than every 6 seconds, you'll receive a 503 response with the error message: `Error: SpikeArrest engaged`. The bufferSize is commented out by default. See "[Adding a buffer"](#addingbuffer). See also "[How does spike arrest work?](#howsoes)"
+This configuration allows 10 API calls per one-minute interval. Actually, the feature "smooths" the number of allowed calls evenly through the interval. If you call the API repeatedly, you'll see that one call goes through every 6 seconds (60/10). If you try to call the API quicker than every 6 seconds, you'll receive a 503 response with the error message: `Error: SpikeArrest engaged`. 
+
+>The bufferSize is commented out by default. For information about buffers, see "Adding a buffer" in [Spike arrest deep dive](https://github.com/apigee-127/a127-documentation/wiki/Spike-arrest-deep-dive) on the Apigee-127 documentation wiki.  
 
 Next, we apply spike arrest to a path, where it will be invoked whenever the path is called:
 
