@@ -42,7 +42,7 @@ Try calling the API in rapid succession to see the effect of this policy.
 $ curl http://localhost:10010/weather?city=Kinston,NC
 ```
 
-If you kept the default configuration, you'll notice that you are only able to call the API about once every 6 seconds. This is because the policy allows 10 calls in a one-minute interval, and it "smooths" the calls out so they are evenly distributed through the interval. For details on the algorithm involved, see  "[How does spike arrest work?](#howdoes)" below.
+If you kept the default configuration, you'll notice that you are only able to call the API about once every 6 seconds. This is because the policy allows 10 calls in a one-minute interval, and it "smooths" the calls out so they are evenly distributed through the interval. For details on the algorithm involved, see [Spike arrest deep dive](https://github.com/apigee-127/a127-documentation/wiki/Spike-arrest-deep-dive) on the Apigee-127 documentation wiki.
 
 ## <a name="deploy"></a>Deploying your API
 
@@ -132,6 +132,7 @@ paths:
       description: "Returns current weather in the specified city to the caller"
 ````
 
+For a list of advanced configurations you can pass to spike arrest when you apply it, see "Advanced configurations" in the [Spike arrest deep dive](https://github.com/apigee-127/a127-documentation/wiki/Spike-arrest-deep-dive) on the Apigee-127 documentation wiki. 
 
 ## Deep dive
 
