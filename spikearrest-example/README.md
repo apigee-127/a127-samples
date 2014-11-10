@@ -75,7 +75,9 @@ $ curl http://yourApigeeOrg-test.apigee.net/spikearrest-sample/weather?city=Kins
 
 ## About the default example configuration
 
-Here's the default configuration for the spike arrest sample. First, we have the `x-volos-resources` definition. It adds spike arrest to the example project with a default configuration.
+Here's the default configuration for the spike arrest sample. Like with all Apigee-127 policies, you have to add it first, then apply it. 
+
+First, we added spike arrest to the `x-volos-resources` definition. 
 
 >Note: Unlike some other Volos.js modules that have "in-memory", Redis, and Apigee modes, spike arrest only has an "in-memory" mode. If you deploy to a service like Apigee Edge, spike arrest continues to function as expected.
 
