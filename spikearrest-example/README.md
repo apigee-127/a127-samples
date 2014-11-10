@@ -6,8 +6,6 @@ This is an example Apigee-127 project that shows you how to add a spike arrest p
 
 A spike arrest policy protects against traffic spikes and offers protection against threats such as denial of service attacks. It throttles the number of requests an API can process by "smoothing" the number of calls that can be processed over a specified time interval. 
 
->Note: Unlike some other Volos.js modules that have "in-memory", Redis, and Apigee modes, spike arrest only has an "in-memory" mode. 
-
 ## How do I use it?
 
 #### 1) Clone this repository from Git
@@ -77,7 +75,9 @@ $ curl http://yourApigeeOrg-test.apigee.net/spikearrest-sample/weather?city=Kins
 
 ## About the default example configuration
 
-Here's the default configuration for the spike arrest sample. First, we have the `x-volos-resources` definition. It adds spike arrest to the example project with a default configuration:
+Here's the default configuration for the spike arrest sample. First, we have the `x-volos-resources` definition. It adds spike arrest to the example project with a default configuration.
+
+>Note: Unlike some other Volos.js modules that have "in-memory", Redis, and Apigee modes, spike arrest only has an "in-memory" mode. If you deploy to a service like Apigee Edge, spike arrest continues to function as expected.
 
 ````yaml
 x-volos-resources:
@@ -90,7 +90,7 @@ x-volos-resources:
       #bufferSize: 3
 ````
 
->This configuration says: "Allow 10 API calls in a one-minute interval." If you call the API repeatedly, you'll see that one call goes through every 6 seconds (60/10). If you try to call the API quicker than every 6 seconds, you'll receive a 503 response with the error message: `Error: SpikeArrest engaged`. The bufferSize is commented out by default. See "[Adding a buffer"](#addingbuffer).
+This configuration allows 10 API calls per one-minute interval. Actually, the feature "smooths" the number of allowed calls evenly through the interval. If you call the API repeatedly, you'll see that one call goes through every 6 seconds (60/10). If you try to call the API quicker than every 6 seconds, you'll receive a 503 response with the error message: `Error: SpikeArrest engaged`. The bufferSize is commented out by default. See "[Adding a buffer"](#addingbuffer). See also "[How does spike arrest work?](#howsoes)"
 
 Next, we apply spike arrest to a path, where it will be invoked whenever the path is called:
 
