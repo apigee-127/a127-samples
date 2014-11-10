@@ -17,7 +17,7 @@ x-volos-resources:
     provider: "volos-spikearrest-memory"
     options:
       timeUnit: "minute"
-      allow: 20 
+      allow: 10 
       #buffer: 3 
 paths:
   /weather:
