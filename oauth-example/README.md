@@ -196,7 +196,7 @@ Or, because we're using curl, you can do the auth header with `-u` like this:
   $ curl -u hTYG6fcQGpsO9ZvxjRke1u8mMiQZ4GAJ:hTYG6fcQGpsO9ZvxjRke1u8mMiQZ4GAJ -X POST "https://localhost:10010/accesstoken" -d "grant_type=client_credentials"
 ````
 
-As succesful response looks like this, and you can see that an `access_token `is included. 
+As successful response looks like this, and you can see that an `access_token `is included. 
 
 ````json
     {
