@@ -20,36 +20,30 @@ x-a127-config:
   password: &password CONFIGURED
 x-volos-resources:
   oauth2:
-    #provider: "volos-oauth-apigee"
-    provider: "volos-oauth-redis"
+    provider: "volos-oauth-apigee"
+    #provider: "volos-oauth-redis"
     options:
-      tokenLifetime: 300000
+      ## Needed for Apigee provider
       key: *apigeeProxyKey
       uri: *apigeeProxyUri
+      ## Needed for Redis provider
       encryptionKey: 'abc123'
       host: '127.0.0.1'
       port: 6379
+      ## Used by both providers
+      tokenLifetime: 300000
       validGrantTypes:
         - client_credentials
         - authorization_code
-        - implicit_grant
-        - password
-      passwordCheck:
-        helper: volos
-        function: passwordCheck
       tokenPaths:  # These will be added to your paths section for you
-        authorize: /authorize
         token: /accesstoken
         invalidate: /invalidate
-        refresh: /refresh
 paths:
   /weather:
     x-swagger-router-controller: weather
     x-volos-authorizations:
         oauth2: {}
     get:
-      #x-volos-apply:
-      #  spikearrest: {}
       description: "Returns current weather in the specified city to the caller"
       operationId: getWeatherByCity
       parameters:
