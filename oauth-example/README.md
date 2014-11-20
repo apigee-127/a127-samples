@@ -244,7 +244,7 @@ That's it, if you see weather data for Kinston, NC, you've succeeded in calling 
   {"coord":{"lon":-77.58,"lat":35.27},"sys":{"type":1,"id":1786,"message":0.1021,"country":"United States of America","sunrise":1416397791,"sunset":1416434512},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"base":"cmc stations","main":{"temp":43,"pressure":1026,"humidity":26,"temp_min":41,"temp_max":44.6},"wind":{"speed":7.78,"deg":190},"clouds":{"all":1},"dt":1416429300,"id":4474436,"name":"Kinston","cod":200}
 ```
 
-## ## <a name="redisprovider"></a>Use Redis as the authorization server
+## <a name="redisprovider"></a>Use Redis as the authorization server
 
 Let's run the sample using Redis as the authorization server. This option is nice if you do not want to use Apigee Edge. Redis also lets you run and test locally without the need for a remote connection. 
 
