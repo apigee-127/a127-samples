@@ -139,6 +139,8 @@ For a list of advanced configurations you can pass to spike arrest when you appl
 
 For a deeper look at spike arrest, how it works, advanced configurations, and more, see [Spike arrest deep dive](https://github.com/apigee-127/a127-documentation/wiki/Spike-arrest-deep-dive) on the Apigee-127 documentation wiki. 
 
+See also a comparison of quota and spike arrest in [Rate limiting](https://github.com/apigee-127/a127-documentation/wiki/Rate-limiting-comparison.md).
+
 
 
 
