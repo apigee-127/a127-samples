@@ -69,7 +69,7 @@ $ a127 project edit
 
 #### 4) Start your a127 API
 
-**If using the Apigee quota:**
+**If using the Apigee quota provider:**
 
 - If you don't have an account, create one:
 
@@ -98,7 +98,7 @@ uris:
 
 Take note of the uris that are returned. You will need them to call the API later in this example. 
 
-**If using the Redis quota:**
+**If using the Redis quota provider:**
 
 - Run the following to download Redis and create a Redis instance running on localhost:
 
@@ -112,7 +112,7 @@ Take note of the uris that are returned. You will need them to call the API late
     $ a127 project start
 ```
 
-**If using the In-memory quota:**
+**If using the In-memory quota provider:**
 
 Start your API on localhost:
 
