@@ -23,20 +23,11 @@
 var debug = require('debug')('helpers');
 
 module.exports = {
-  quotaHelper: quotaHelper,
   clientIp: clientIp
 };
-
-function quotaHelper(req) {
-  var key = 'someKey'
-  console.log('Quota Key: ' + key);
-  if (debug.enabled) { debug('Quota Key: '+key); }
-  return key;
-}
 
 function clientIp(req) {
   var key = req.connection.remoteAddress;
   console.log('clientIp Key: ' + key);
-  if (debug.enabled) { debug('clientIp Key: '+key); }
   return key;
 }
