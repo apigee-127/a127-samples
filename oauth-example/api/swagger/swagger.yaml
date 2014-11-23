@@ -20,8 +20,8 @@ x-a127-config:
   password: &password CONFIGURED
 x-volos-resources:
   oauth2:
-    provider: "volos-oauth-apigee"
-    #provider: "volos-oauth-redis"
+    #provider: "volos-oauth-apigee"
+    provider: "volos-oauth-redis"
     options:
       ## Needed for Apigee provider
       key: *apigeeProxyKey

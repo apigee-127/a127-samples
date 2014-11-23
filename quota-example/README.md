@@ -18,7 +18,7 @@ Use a quota to configure the number of request messages that an app is allowed t
 
 Limit the number of connections apps can make to your API proxy's target backend over a specific period of time.
 
-Quota is typically used to enforce business contracts or SLAs with developers and partners, rather than for operational traffic management.
+Quota is typically used to enforce business contracts or SLAs with developers and partners, rather than for operational traffic management. For example, you may have one quota set for paying customers and another for "freemium" (non-paying) users.
 
 #### When not to use a quota
 
@@ -26,9 +26,9 @@ Don't use it to protect your API proxy against traffic spikes. For that, use a [
 
 #### Important to know about quotas
 
-A quota enforces consumption limits on client apps by maintaining a distributed 'counter' that tallies incoming requests. The counter can tally API calls for any identifiable entity, including apps, developers, API keys, access tokens, and so on. Usually, API keys are used to identify client apps. 
+A quota enforces consumption limits on client apps by maintaining a distributed 'counter' that tallies incoming requests. The counter can tally API calls for any identifiable entity, including apps, developers, API keys, access tokens, and so on. Usually, API keys are used to identify client apps. In this example, we show how to enforce a quota based on the incoming client IP address. 
 
-Quota is computationally expensive so, for high-traffic APIs, it should configured for longer time intervals, such as a day or month. 
+Quota can be computationally expensive so, for high-traffic APIs, it should configured for longer time intervals, such as a day or month. 
 
 ## <a name="howdo"></a>How do I use it?
 
@@ -92,8 +92,8 @@ revision: 2
 state: deployed
 basePath: /
 uris:
-  - 'http://yourApigeeOrg-test.apigee.net/cache-sample'
-  - 'https://yourApigeeOrg-test.apigee.net/cache-sample'
+  - 'http://yourApigeeOrg-test.apigee.net/quota-sample'
+  - 'https://yourApigeeOrg-test.apigee.net/quuota-sample'
 ```
 
 Take note of the uris that are returned. You will need them to call the API later in this example. 
