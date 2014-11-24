@@ -16,7 +16,7 @@ Use a quota to configure the number of request messages that an app is allowed t
 
 #### When to use a quota
 
-Limit the number of connections apps can make to your API proxy's target backend over a specific period of time.
+Use a quota when you want to limit the number of connections apps can make to your API proxy's target backend over a specific period of time.
 
 Quota is typically used to enforce business contracts or SLAs with developers and partners, rather than for operational traffic management. For example, you may have one quota set for paying customers and another for "freemium" (non-paying) users.
 
@@ -24,7 +24,7 @@ Quota is typically used to enforce business contracts or SLAs with developers an
 
 Don't use it to protect your API proxy against traffic spikes. For that, use a [spike arrest policy](https://github.com/apigee-127/a127-samples/tree/master/spikearrest-example).
 
-#### Important to know about quotas
+#### What you need to know about quotas
 
 A quota enforces consumption limits on client apps by maintaining a distributed 'counter' that tallies incoming requests. The counter can tally API calls for any identifiable entity, including apps, developers, API keys, access tokens, and so on. Usually, API keys are used to identify client apps. In this example, we show how to enforce a quota based on the incoming client IP address. 
 
@@ -34,13 +34,13 @@ Quota can be computationally expensive so, for high-traffic APIs, it should conf
 
 #### 1) Clone this repository from Git
 ```bash 
-$ git clone https://github.com/apigee-127/a127-samples
+    $ git clone https://github.com/apigee-127/a127-samples
 ```
 
 #### 2) Install npm dependencies for the project
 ```bash
-$ cd a127-samples/quota-example
-$ npm install
+    $ cd a127-samples/quota-example
+    $ npm install
 ```
 
 #### 3) Uncomment one of the quota providers in the a127 project swagger file with the swagger editor
@@ -48,7 +48,7 @@ $ npm install
 - Open the Swagger editor:
 
 ```bash
-$ a127 project edit
+    $ a127 project edit
 ```
 
 - Uncomment one provider under `x-volos-resources`, e.g.:
@@ -148,7 +148,6 @@ Here's our function, in the `/helpers/volos.js` file:
     function clientIp(req) {
       var key = req.connection.remoteAddress;
       console.log('clientIp Key: ' + key);
-      if (debug.enabled) { debug('clientIp Key: '+key); }
       return key;
     }
 ```
@@ -169,7 +168,7 @@ Now, quota counts will be maintained separately for each incoming client IP.
 
 ## Related information
 
-For a comparison of rate limiting policies, see Comparing rate limit policies on the Apigee-127 documentation wiki. 
+For a comparison of rate limiting policies, see [Rate limiting](https://github.com/apigee-127/a127-documentation/wiki/Rate-limiting-comparison.md) on the Apigee-127 documentation wiki. 
 
 
 
