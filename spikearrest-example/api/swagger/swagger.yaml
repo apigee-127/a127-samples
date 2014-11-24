@@ -23,7 +23,10 @@ paths:
   /weather:
     x-swagger-router-controller: weather
     x-volos-apply:
-        spikearrest: {}
+        spikearrest:
+          key:
+            helper: volos
+            function: clientIp
     get:
       #x-volos-apply:
       #  spikearrest: {}
