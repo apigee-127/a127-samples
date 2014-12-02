@@ -9,27 +9,41 @@ schemes:
   - "https"
 consumes:
   - "application/json"
+  - "application/x-www-form-urlencoded"
 produces:
   - "application/json"
+x-a127-config:
+  apigeeProxyKey: &apigeeProxyKey CONFIGURED
+  apigeeProxyUri: &apigeeProxyUri CONFIGURED
+  organization: &organization CONFIGURED
+  username: &username CONFIGURED
+  password: &password CONFIGURED
 x-volos-resources:
-  ## Add the spike arrest module
-  spikearrest:
-    provider: "volos-spikearrest-memory"
+  oauth2:
+    #provider: "volos-oauth-apigee"
+    provider: "volos-oauth-redis"
     options:
-      timeUnit: "minute"
-      allow: 10 
-      #buffer: 3 
+      ## Needed for Apigee provider
+      key: *apigeeProxyKey
+      uri: *apigeeProxyUri
+      ## Needed for Redis provider
+      encryptionKey: 'abc123'
+      host: '127.0.0.1'
+      port: 6379
+      ## Used by both providers
+      tokenLifetime: 300000
+      validGrantTypes:
+        - client_credentials
+        - authorization_code
+      tokenPaths:  # These will be added to your paths section for you
+        token: /accesstoken
+        invalidate: /invalidate
 paths:
   /weather:
     x-swagger-router-controller: weather
-    x-volos-apply:
-        spikearrest:
-          key:
-            helper: volos
-            function: clientIp
+    x-volos-authorizations:
+        oauth2: {}
     get:
-      #x-volos-apply:
-      #  spikearrest: {}
       description: "Returns current weather in the specified city to the caller"
       operationId: getWeatherByCity
       parameters:

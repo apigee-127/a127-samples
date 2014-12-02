@@ -135,9 +135,45 @@ paths:
 
 For a list of advanced configurations you can pass to spike arrest when you apply it, see "Advanced configurations" in the [Spike arrest deep dive](https://github.com/apigee-127/a127-documentation/wiki/Spike-arrest-deep-dive) on the Apigee-127 documentation wiki. 
 
+## <a name="aboutthe"></a>About the helper function
+
+Helpers let you add additional functionality to your API. You place helper functions in Node.js files in the `/helpers` directory. 
+
+Our example uses a helper function to retrieve the client IP address (IP where the API call originated). The result of the function (the IP address) is then used as the spikearrest "key". 
+
+Here's our function, in the `/helpers/volos.js` file:
+
+```javascript
+    module.exports = {
+      clientIp: clientIp
+    };
+
+    function clientIp(req) {
+      var key = req.connection.remoteAddress;
+      console.log('clientIp Key: ' + key);
+      return key;
+    }
+```
+
+Think of the key as representing a bucket of spike arrest counts. In this example, a request from a client IP will go in its own separate bucket. Other IP addresses will be assigned to their own buckets.
+
+We apply the helper function in the `swagger.yaml` file when we apply the spike arrest, as follows:
+
+``` yaml
+    x-volos-apply:
+        spikearrest:
+          key:
+            helper: volos
+            function: clientIp
+```
+
+Now, spike arrest counts will be maintained separately for each incoming client IP.
+
 ## Deep dive
 
 For a deeper look at spike arrest, how it works, advanced configurations, and more, see [Spike arrest deep dive](https://github.com/apigee-127/a127-documentation/wiki/Spike-arrest-deep-dive) on the Apigee-127 documentation wiki. 
+
+See also a comparison of quota and spike arrest in [Rate limiting](https://github.com/apigee-127/a127-documentation/wiki/Rate-limiting-comparison.md).
 
 
 

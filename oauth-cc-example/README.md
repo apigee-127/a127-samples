@@ -1,4 +1,4 @@
-# OAuth example
+# OAuth client credentials grant type example
 
 * [What is this?](#whatisthis)
 * [How it works?](#whatis)
@@ -10,9 +10,11 @@
 
 In this Apigee-127 example, we show you how to:
 
-* Obtain an access token with the OAuth 2.0 client credentials grant type. In the first part of the example, we'll use Apigee Edge as the "authorization server" and then we'll show you how to use Redis running locally.
+* Add OAuth security to an Apigee-127 API using the OAuth 2.0 client credentials grant type. 
 
-* Add and configure OAuth security to an API using the Swagger editor. 
+* Obtain an access token with the client credentials grant type. In the first part of the example, we'll use Apigee Edge as the "authorization server" and then we'll show you how to use Redis running locally.
+
+* Call the secured API with the access token.
 
 > If you are not familiar with OAuth 2.0 and terms like grant type and authorization server, there are many resources available on the web. We recommend you start with the [IETF specification](https://tools.ietf.org/html/draft-ietf-oauth-v2-31). It includes a good, general introduction to the OAuth 2.0 framework and its use cases.
 
@@ -20,11 +22,18 @@ In this Apigee-127 example, we show you how to:
 
 The OAuth 2.0 client credentials grant type is fairly straightforward. A client app requests an access token directly by providing its client ID and client secret keys to an authorization server (for example, Apigee Edge). 
 
-The client ID and secret keys are generated when you register an app with an authorization server. App registration is always required whenever you use OAuth.
+>Note: The primary use case for this flow is when the client app (rather than the end user) is the resource owner. For example, if the client app needs to use a backend service such as cloud storage to do it's work, then this flow is the correct choice. 
+
+These keys are generated when a client app is registered with the authorization server. For example, if your OAuth provider is Apigee, then the app must be registered on Apigee Edge. App registration is always required whenever you use OAuth. We'll walk through the steps in this example.
 
 The client credentials flow looks like this, where Apigee Edge is the authorization server:
 
 ![alt text](../images/oauth-client-cred-flow-3.png)
+
+1. The client app requests an access token, providing the client ID, and client secret (obtained during client app registration). 
+2. If the `client_id` and `client_secret` are valid, an access token is minted. If you're using the Apigee provider for your OAuth, then a call is made to Apigee Edge for the token. If Redis is the provider, then Apigee-127 generates the token. 
+3. The token is returned to the client app.
+4. The client app uses the token to make API calls on protected paths. For example, if the `/weather` path is protected, the call will proceed if a valid access token is provided. Otherwise, the call will fail. 
 
 ## <a name="howdo"></a>How do I get it?
 
@@ -100,15 +109,15 @@ Notice in the `x-volos-resources section` there's a resource called `oauth2`, an
 
 Here's a quick description of the oauth2 configuration:
 
-* provider -- The authorization server implementation -- either Apigee or Redis. 
-* key -- The client ID that is used to authenticate access to the `apigee-remote-proxy` services. It was generated when you created your account.  
-* uri -- The URI for the `apigee-remote-proxy` deployed on Apigee Edge. Also generated when you created your account.
-* encryptionKey -- A key used by the Redis provider to generate encrypted tokens.
-* host -- The host where the Redis server is running.
-* port -- The port where the Redis server is listening.
-* tokenLifetime -- The life span of an access token in milliseconds.
-* validGrantTypes -- The OAuth 2.0 grant types the authorization server can handle. In this example, we're focusing on the client credentials grant type.
-* tokenPaths -- The paths that resolve to token endpoints on the authorization server. The endpoints generate access tokens and allow you to invalidate tokens.
+* `provider` -- The authorization server implementation -- either Apigee or Redis. 
+* `key` -- The client ID that is used to authenticate access to the `apigee-remote-proxy` services. It was generated when you created your account.  
+* `uri` -- The URI for the `apigee-remote-proxy` deployed on Apigee Edge. Also generated when you created your account.
+* `encryptionKey` -- A key used by the Redis provider to generate encrypted tokens.
+* `host` -- The host where the Redis server is running.
+* `port` -- The port where the Redis server is listening.
+* `tokenLifetime` -- The life span of an access token in milliseconds.
+* `validGrantTypes` -- The OAuth 2.0 grant types the authorization server can handle. In this example, we're focusing on the client credentials grant type.
+* `tokenPaths` -- The paths that resolve to token endpoints on the authorization server. The endpoints generate access tokens and allow you to invalidate tokens.
 
 ### Add OAuth security to the API
 
@@ -235,13 +244,53 @@ Start the example project on localhost:
 Call the API, substituting your access token for the bearer token in this example:
 
 ```bash
-  curl -i -H 'Authorization Bearer: 3JTnOwzrfTtnbMGDdys2ZymGAA7t' http://localhost:10010/weather?city=Kinston,NC
+  curl -i -H 'Authorization: Bearer 3JTnOwzrfTtnbMGDdys2ZymGAA7t' http://localhost:10010/weather?city=Kinston,NC
 ```
  
 That's it, if you see weather data for Kinston, NC, you've succeeded in calling the protected API.
 
 ```json
-  {"coord":{"lon":-77.58,"lat":35.27},"sys":{"type":1,"id":1786,"message":0.1021,"country":"United States of America","sunrise":1416397791,"sunset":1416434512},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"base":"cmc stations","main":{"temp":43,"pressure":1026,"humidity":26,"temp_min":41,"temp_max":44.6},"wind":{"speed":7.78,"deg":190},"clouds":{"all":1},"dt":1416429300,"id":4474436,"name":"Kinston","cod":200}
+  {  
+     "coord":{  
+        "lon":-77.58,
+        "lat":35.27
+     },
+     "sys":{  
+        "type":1,
+        "id":1786,
+        "message":0.2717,
+        "country":"United States of America",
+        "sunrise":1416397791,
+        "sunset":1416434512
+     },
+     "weather":[  
+        {  
+           "id":800,
+           "main":"Clear",
+           "description":"sky is clear",
+           "icon":"01d"
+        }
+     ],
+     "base":"cmc stations",
+     "main":{  
+        "temp":41,
+        "pressure":1028,
+        "humidity":25,
+        "temp_min":39.2,
+        "temp_max":42.8
+     },
+     "wind":{  
+        "speed":5.62,
+        "deg":180
+     },
+     "clouds":{  
+        "all":1
+     },
+     "dt":1416420900,
+     "id":4474436,
+     "name":"Kinston",
+     "cod":200
+  }
 ```
 
 ## <a name="redisprovider"></a>Use Redis as the authorization server
@@ -260,13 +309,13 @@ Let's run the sample using Redis as the authorization server. This option is nic
 
 3. Run the following to download and install Redis. If you already have Redis installed, you can skip this step.
 
-```bash
+```sh
   $ sh redis.sh
 ```
 
 4. Start Redis. You can use this script if you installed with `redis.sh`.
 
-```bash
+```sh
   $ sh start redis.sh
 ```
 
@@ -278,10 +327,37 @@ Let's run the sample using Redis as the authorization server. This option is nic
 
 Note that `init-redis.js` returns a developer object and an application object. Save the credentials for the application (the key and secret) -- you'll need them later.
 
-```
-  THE DEVELOPER: {"id":"9d550e32-bc14-4e29-b4d6-609030b27f8d","uuid":"9d550e32-bc14-4e29-b4d6-609030b27f8d","email":"someperson@example.com","userName":"someperson@example.com","firstName":"Some","lastName":"Person"}
+```json
+  THE DEVELOPER: 
 
-  THE APP: {"id":"21612a13-bdda-43ac-8e7a-d5ee49d365bf","uuid":"21612a13-bdda-43ac-8e7a-d5ee49d365bf","name":"Test App","developerId":"9d550e32-bc14-4e29-b4d6-609030b27f8d","credentials":[{"key":"UnTe0JZmaC9cbVRTI8QW9Kwvza8ZRrKS1RAmpYEOcrc=","secret":"riumzPhjKwzva0A9L5WLin9JsaOWWoPHrNSaqNg1R0A=","status":"valid"}],"scopes":["scope1","scope2"]}
+  {  
+   "id":"9d550e32-bc14-4e29-b4d6-609030b27f8d",
+   "uuid":"9d550e32-bc14-4e29-b4d6-609030b27f8d",
+   "email":"someperson@example.com",
+   "userName":"someperson@example.com",
+   "firstName":"Some",
+   "lastName":"Person"
+  }
+
+  THE APP: 
+
+  {  
+   "id":"21612a13-bdda-43ac-8e7a-d5ee49d365bf",
+   "uuid":"21612a13-bdda-43ac-8e7a-d5ee49d365bf",
+   "name":"Test App",
+   "developerId":"9d550e32-bc14-4e29-b4d6-609030b27f8d",
+   "credentials":[  
+      {  
+         "key":"UnTe0JZmaC9cbVRTI8QW9Kwvza8ZRrKS1RAmpYEOcrc=",
+         "secret":"riumzPhjKwzva0A9L5WLin9JsaOWWoPHrNSaqNg1R0A=",
+         "status":"valid"
+      }
+   ],
+   "scopes":[  
+      "scope1",
+      "scope2"
+   ]
+  }
 
   Client ID: UnTe0JZmaC9cbVRTI8QW9Kwvza8ZRrKS1RAmpYEOcrc=
 
@@ -290,32 +366,77 @@ Note that `init-redis.js` returns a developer object and an application object. 
 
 4. Start your API on localhost:
 
-```bash
-  $ a127 project start
+```sh
+   $ a127 project start
 ```
 
 5. Send a request to retrieve an access token from the Redis authorization server. Substitute in the client ID and client secret you obtained previously:
 
 ````sh
-  $ curl -X POST "https://localhost:10010/accesstoken" -d "grant_type=client_credentials&client_id=hTYG6fcQGpsO9ZvxjRke1u8mMiQZ4GAJ&client_secret=we2YiMmC9kVZ1vjC"
+  $ curl -X POST "https://localhost:10010/accesstoken" -d "grant_type=client_credentials&client_id=UnTe0JZmaC9cbVRTI8QW9Kwvza8ZRrKS1RAmpYEOcrc=&client_secret=riumzPhjKwzva0A9L5WLin9JsaOWWoPHrNSaqNg1R0A="
 ````
 
 The result includes an access token: 
 
-```
-  {"issued_at":1416421296897,"access_token":"bbTnngjrjFoEP8wy7UXzZgqQwtiAaQOOc3VXf0uipqg=","expires_in":300,"token_type":"bearer"}
+```json
+  {  
+   "issued_at":1416421296897,
+   "access_token":"bbTnngjrjFoEP8wy7UXzZgqQwtiAaQOOc3VXf0uipqg=",
+   "expires_in":300,
+   "token_type":"bearer"
+  }
 ```
 
 6. Now, call the API with the access token:
 
-```bash
-  curl -i -H 'Authorization Bearer: bbTnngjrjFoEP8wy7UXzZgqQwtiAaQOOc3VXf0uipqg=' http://localhost:10010/weather?city=Kinston,NC
+```sh
+  curl -i -H 'Authorization: Bearer bbTnngjrjFoEP8wy7UXzZgqQwtiAaQOOc3VXf0uipqg=' http://localhost:10010/weather?city=Kinston,NC
 ```
 
 If the call succeeds, you get the weather report!
 
-````
-  {"coord":{"lon":-77.58,"lat":35.27},"sys":{"type":1,"id":1786,"message":0.2717,"country":"United States of America","sunrise":1416397791,"sunset":1416434512},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"base":"cmc stations","main":{"temp":41,"pressure":1028,"humidity":25,"temp_min":39.2,"temp_max":42.8},"wind":{"speed":5.62,"deg":180},"clouds":{"all":1},"dt":1416420900,"id":4474436,"name":"Kinston","cod":200}
+````json
+  {  
+     "coord":{  
+        "lon":-77.58,
+        "lat":35.27
+     },
+     "sys":{  
+        "type":1,
+        "id":1786,
+        "message":0.2717,
+        "country":"United States of America",
+        "sunrise":1416397791,
+        "sunset":1416434512
+     },
+     "weather":[  
+        {  
+           "id":800,
+           "main":"Clear",
+           "description":"sky is clear",
+           "icon":"01d"
+        }
+     ],
+     "base":"cmc stations",
+     "main":{  
+        "temp":41,
+        "pressure":1028,
+        "humidity":25,
+        "temp_min":39.2,
+        "temp_max":42.8
+     },
+     "wind":{  
+        "speed":5.62,
+        "deg":180
+     },
+     "clouds":{  
+        "all":1
+     },
+     "dt":1416420900,
+     "id":4474436,
+     "name":"Kinston",
+     "cod":200
+  }
 ````
 
 
