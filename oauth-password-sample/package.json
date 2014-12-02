@@ -9,6 +9,7 @@
   "main": "app.js",
   "dependencies": {
     "express": "3.x.x",
+    "debug": "",
     "a127-magic": "",
     "volos-oauth-redis": "",
     "volos-oauth-apigee": ""

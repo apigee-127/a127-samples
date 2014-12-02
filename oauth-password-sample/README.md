@@ -26,7 +26,7 @@ A client app must also supply its client ID and client secret keys to an authori
 
 The client ID and secret keys are generated when you register an app with an authorization server. App registration is always required whenever you use OAuth.
 
-The password flow looks like this, where Apigee Edge is the authorization server:
+The password flow looks like this, where Apigee Edge is the authorization server. We'll discuss the parts of the flow later in this topic. 
 
 ![alt text](../images/oauth-password-flow.png)
 

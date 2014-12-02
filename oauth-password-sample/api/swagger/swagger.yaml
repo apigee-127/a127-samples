@@ -1,62 +1,132 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Hello World App
-# during dev, should point to your local machine
-host: localhost
-# basePath prefixes all resource paths 
-basePath: /
-# 
+  title: "OAuth 2.0 Password grant type using the Basic OpenWeatherMap API"
+host: "localhost"
+basePath: "/" 
 schemes:
-  # tip: remove http to make production-grade
-  - http
-  - https
-# format of bodies a client can send (Content-Type)
+  - "http"
+  - "https"
 consumes:
-  - application/json
-# format of the responses to the client (Accepts)
+  - "application/json"
+  - "application/x-www-form-urlencoded"
 produces:
-  - application/json
-x-a127-config: {}
-x-volos-resources: {}
+  - "application/json"
+x-a127-config:
+  apigeeProxyKey: &apigeeProxyKey CONFIGURED
+  apigeeProxyUri: &apigeeProxyUri CONFIGURED
+  organization: &organization CONFIGURED
+  username: &username CONFIGURED
+  password: &password CONFIGURED
+x-volos-resources:
+  oauth2:
+    provider: "volos-oauth-apigee"
+    #provider: "volos-oauth-redis"
+    options:
+      ## Needed for Apigee provider
+      key: *apigeeProxyKey
+      uri: *apigeeProxyUri
+      ## Needed for Redis provider
+      encryptionKey: 'abc123'
+      host: '127.0.0.1'
+      port: 6379
+      ## Used by both providers
+      tokenLifetime: 300000
+      passwordCheck:
+        helper: volos
+        function: passwordCheck
+      validGrantTypes:
+        - password 
+      tokenPaths:  # These will be added to your paths section for you
+        token: /accesstoken
+        invalidate: /invalidate
+        refresh: /refresh
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
-    x-volos-authorizations: {}
-    x-volos-apply: {}
+  /weather:
+    x-swagger-router-controller: weather
+    x-volos-authorizations:
+      oauth2: {}
     get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
+      description: "Returns current weather in the specified city to the caller"
+      operationId: getWeatherByCity
       parameters:
-        - name: name
+        - name: city
           in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+          description: "The city you want weather for in the form city,state,country"
+          required: true
+          type: "string"
       responses:
         "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: HelloWorldResponse
-        # responses may fall through to errors
+          description: "Success"
+          schema: 
+            $ref: WeatherResponse
         default:
-          description: Error
+          description: "Error"
           schema:
             $ref: ErrorResponse
-# complex objects have schema definitions
 definitions:
-  HelloWorldResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
+  WeatherResponse:
+    properties: 
+      base: 
+        type: "string"
+      clouds: 
+        type: "object"
+        properties: 
+          all: 
+            type: "number"
+      cod: 
+        type: "number"
+      coord: 
+        type: "object"
+        properties: 
+          lat: 
+            type: "number"
+          lon: 
+            type: "number"
+      dt: 
+        type: "number"
+      id: 
+        type: "number"
+      main: 
+        type: "object"
+        properties: 
+          humidity: 
+            type: "number"
+          pressure: 
+            type: "number"
+          temp_max: 
+            type: "number"
+          temp_min: 
+            type: "number"
+          temp: 
+            type: "number"
+      name: 
+        type: "string"
+      sys: 
+        type: "object"
+        properties: 
+          country: 
+            type: "string"
+          id: 
+            type: "number"
+          message: 
+            type: "number"
+          sunrise: 
+            type: "number"
+          sunset: 
+            type: "number"
+          type: 
+            type: "number"
+      wind: 
+        type: "object"
+        properties: 
+          deg: 
+            type: "number"
+          speed: 
+            type: "number"
   ErrorResponse:
     required:
-      - message
+      - "message"
     properties:
       message:
-        type: string
+        type: "string"
