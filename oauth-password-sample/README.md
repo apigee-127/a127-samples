@@ -87,11 +87,11 @@ In a terminal window, cd to the root of the example project `./oauth-password-ex
 
 `a127 project edit`
 
-Notice in the `x-volos-resources section` there's a resource called `oauth2`, and that `volos-oauth-apigee` provider is uncommented. The only other option is a Redis implementation. We'll look at that one later in this example.
+Notice in the `x-a127-services section` there's a resource called `oauth2`, and that `volos-oauth-apigee` provider is uncommented. The only other option is a Redis implementation. We'll look at that one later in this example.
 
 
 ```` yaml
-  x-volos-resources:
+  x-127-services:
     oauth2:
       provider: "volos-oauth-apigee"
       #provider: "volos-oauth-redis"
@@ -131,13 +131,13 @@ Here's a quick description of the oauth2 configuration:
 
 ### Add OAuth security to API paths
 
-The example is set up with OAuth security on the `/weather` path of the API. You can protect any path in your API simply by adding the same `x-volos-authorizations` reference to it. Here's what it looks like in the example's Swagger file: 
+The example is set up with OAuth security on the `/weather` path of the API. You can protect any path in your API simply by adding the same `x-a127-authorizations` reference to it. Here's what it looks like in the example's Swagger file: 
 
 ````yaml
   paths:
     /weather:
       x-swagger-router-controller: weather
-     x-volos-authorizations:
+     x-a127-authorizations:
          oauth2: {}
 ````
 
@@ -175,7 +175,7 @@ For this example, the simplest way to get a usable set of client credentials is 
 
 ### <a name="helperfunction"></a>Implementing the password check function
 
-If you use the password grant type, you  **must** include the `passwordCheck` element in the `x-volos-resources` definition. It refers to a method on a helper function, as we'll explain next. 
+If you use the password grant type, you  **must** include the `passwordCheck` element in the `x-a127-services` definition. It refers to a method on a helper function, as we'll explain next. 
 
 ```yaml
     passwordCheck:
@@ -339,7 +339,7 @@ Let's run the sample using Redis as the authorization server. This option is nic
 2. Comment the `volos-oauth-apigee` provider and uncomment the `volos-oauth-redis` provider: 
 
 ```yaml
-  x-volos-resources:
+  x-a127-resources:
     oauth2:
       #provider: "volos-oauth-apigee"
       provider: "volos-oauth-redis"

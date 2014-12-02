@@ -82,11 +82,11 @@ In a terminal window, cd to the root of the example project `./oauth-example`, a
 
 `a127 project edit`
 
-Notice in the `x-volos-resources section` there's a resource called `oauth2`, and that `volos-oauth-apigee provider` is uncommented. The only other option is a Redis implementation. We'll look at that one later in this example.
+Notice in the `x-127-services` section there's a resource called `oauth2`, and that `volos-oauth-apigee provider` is uncommented. The only other option is a Redis implementation. We'll look at that one later in this example.
 
 
 ```` yaml
-  x-volos-resources:
+  x-a127-services:
     oauth2:
       provider: "volos-oauth-apigee"
       #provider: "volos-oauth-redis"
@@ -121,13 +121,13 @@ Here's a quick description of the oauth2 configuration:
 
 ### Add OAuth security to the API
 
-The example is set up with OAuth security on the `/weather` path of the API. You can protect any path in your API simply by adding the same `x-volos-authorizations` reference to it. Here's what it looks like in the example's Swagger file: 
+The example is set up with OAuth security on the `/weather` path of the API. You can protect any path in your API simply by adding the same `x-a127-authorizations` reference to it. Here's what it looks like in the example's Swagger file: 
 
 ````yaml
   paths:
     /weather:
       x-swagger-router-controller: weather
-     x-volos-authorizations:
+     x-a127-authorizations:
          oauth2: {}
 ````
 
@@ -301,7 +301,7 @@ Let's run the sample using Redis as the authorization server. This option is nic
 2. Comment the `volos-oauth-apigee` provider and uncomment the `volos-oauth-redis` provider: 
 
 ```yaml
-  x-volos-resources:
+  x-a127-services:
     oauth2:
       #provider: "volos-oauth-apigee"
       provider: "volos-oauth-redis"

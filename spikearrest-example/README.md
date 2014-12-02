@@ -86,12 +86,12 @@ $ curl http://yourApigeeOrg-test.apigee.net/spikearrest-sample/weather?city=Kins
 
 Here's the default configuration for the spike arrest sample. Like with all Apigee-127 policies, you have to add it first, then apply it. 
 
-First, we added spike arrest to the `x-volos-resources` definition. 
+First, we added spike arrest to the `x-a127-services` definition. 
 
 >Note: Unlike some other Volos.js modules that have "in-memory", Redis, and Apigee modes, spike arrest only has an "in-memory" mode. If you deploy to a service like Apigee Edge, spike arrest continues to function as expected.
 
 ````yaml
-x-volos-resources:
+x-127-services:
   ## Add the spike arrest module
   spikearrest:
     provider: "volos-spikearrest-memory"
@@ -110,11 +110,11 @@ Next, we apply spike arrest to a path, where it will be invoked whenever the pat
 ````yaml
 paths:
   /weather:
-    x-volos-apply:
+    x-a127-apply:
       spikearrest: {}
     x-swagger-router-controller: weather
     get:
-      #x-volos-apply:
+      #x-a127-apply:
         #spikearrest: {key: "foo", weight: 2}
       description: "Returns current weather in the specified city to the caller"
 ````
@@ -124,11 +124,11 @@ Or, spike arrest can be applied to an operation, like this, where it will be inv
 ````yaml
 paths:
   /weather:
-    #x-volos-apply:
+    #x-a127-apply:
       #spikearrest: {key: "foo", weight: 2}
     x-swagger-router-controller: weather
     get:
-      x-volos-apply:
+      x-a127-apply:
         spikearrest: {}
       description: "Returns current weather in the specified city to the caller"
 ````
@@ -160,7 +160,7 @@ Think of the key as representing a bucket of spike arrest counts. In this exampl
 We apply the helper function in the `swagger.yaml` file when we apply the spike arrest, as follows:
 
 ``` yaml
-    x-volos-apply:
+    x-a127-apply:
         spikearrest:
           key:
             helper: volos

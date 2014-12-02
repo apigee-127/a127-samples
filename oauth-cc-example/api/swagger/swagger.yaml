@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: "Spike Arrest Example Using the Basic OpenWeatherMap API"
+  title: "OAuth 2.0 example with the client credentials grant type using the Basic OpenWeatherMap API"
 host: "localhost"
 basePath: "/" 
 schemes:
@@ -18,10 +18,10 @@ x-a127-config:
   organization: &organization CONFIGURED
   username: &username CONFIGURED
   password: &password CONFIGURED
-x-volos-resources:
+x-a127-services:
   oauth2:
-    #provider: "volos-oauth-apigee"
-    provider: "volos-oauth-redis"
+    provider: "volos-oauth-apigee"
+    #provider: "volos-oauth-redis"
     options:
       ## Needed for Apigee provider
       key: *apigeeProxyKey
@@ -41,7 +41,7 @@ x-volos-resources:
 paths:
   /weather:
     x-swagger-router-controller: weather
-    x-volos-authorizations:
+    x-a127-authorizations:
         oauth2: {}
     get:
       description: "Returns current weather in the specified city to the caller"

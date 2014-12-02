@@ -19,7 +19,7 @@ x-a127-config:
   organization: &organization CONFIGURED
   username: &username CONFIGURED
   password: &password CONFIGURED
-x-volos-resources:
+x-a127-servicees:
   spikeArrest:
     provider: "volos-spikearrest-memory"
     options:
@@ -73,7 +73,7 @@ x-volos-resources:
         refresh: /refresh
 paths:
   /weather:
-    x-volos-apply:
+    x-a127-apply:
       analytics: {}
       spikeArrest:
         key:
@@ -100,7 +100,7 @@ paths:
             $ref: ErrorResponse
   /weather_quota:
     x-swagger-router-controller: weather
-    x-volos-apply:
+    x-a127-apply:
       analytics: {}
       quota: 
         key:
@@ -126,7 +126,7 @@ paths:
             $ref: ErrorResponse
   /weather_cached:
     x-swagger-router-controller: weather
-    x-volos-apply:
+    x-a127-apply:
       analytics: {}
       cache: 
         key:
@@ -152,7 +152,7 @@ paths:
             $ref: ErrorResponse
   /weather_secure:
     x-swagger-router-controller: weather
-    x-volos-authorizations:
+    x-a127-authorizations:
       oauth2: {}
     get:
       description: Returns current weather in the specified city to the caller

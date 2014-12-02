@@ -26,9 +26,9 @@ $ npm install
 ```bash
 $ a127 project edit
 ```
-- Uncomment one provider under x-volos-resources, e.g.:
+- Uncomment one provider under x-a127-services, e.g.:
 ```yaml
-x-volos-resources:
+x-a127-services:
   #Defines our cache
   cache:
       ## Uncomment one cache provider
