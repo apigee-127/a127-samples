@@ -11,6 +11,7 @@
     "express": "3.x.x",
     "debug": "",
     "a127-magic": "",
+    "volos-management-redis": "",
     "volos-oauth-redis": "",
     "volos-oauth-apigee": ""
   },

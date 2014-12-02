@@ -17,24 +17,26 @@ In this Apigee-127 example, we show you how to:
 
 * Call the secured API with the access token.
 
+* Use a refresh token.
+
 
 > If you are not familiar with OAuth 2.0 and terms like grant type and authorization server, there are many resources available on the web. We recommend you start with the [IETF specification](https://tools.ietf.org/html/draft-ietf-oauth-v2-31). It includes a good, general introduction to the OAuth 2.0 framework and its use cases.
 
 ## <a name="whatis">How it works
 
-The OAuth 2.0 password grant type requires the client app to provide the resource owner's username/password to the authorization server. If the credentials are valid, the authorization server returns an access token to the client. 
+The OAuth 2.0 password grant type requires the client app to provide the resource owner's username/password when requesting an access token. 
 
->Note: This flow should only be used for highly trusted client apps because the client app has direct access to the user's credentials. However, the credentials are only used once in a single request, and they are exchanged for an access token, which is used for all subsequent requests.
+>Note: This flow should only be used for highly trusted client apps, because the client app has direct access to the user's credentials. However, the credentials are only used once in a single request, and they are exchanged for an access token, which is used for all subsequent requests.
 
-A client app must also supply its client ID and client secret keys to an authorization server (for example, Apigee Edge). These keys are generated when you register an app with an authorization server. App registration is always required whenever you use OAuth. We'll walk through the steps in this example.
+A client app must also supply its client ID and client secret keys when requesting an access token. These keys are generated when a client app is registered with the authorization server. For example, if your OAuth provider is Apigee, then the app must be registered on Apigee Edge. App registration is always required whenever you use OAuth. We'll walk through the steps in this example.
 
 The password grant type flow we'll see in this example looks like this: 
 
 ![alt text](../images/oauth-password-flow.png)
 
 1. The client app requests an access token, providing a username/password (typically entered by the end user into a form provided by the client app), client ID, and client secret (obtained during client app registration). 
-2. Apigee-127 receives the request and checks the username/password by calling the passwordCheck() helper function.
-3. If the credentials are valid, and if the client_id and client_secret are valid, an access token is minted. If you're using the Apigee provider for your OAuth, then a call is made to Edge for the token. If Redis is the provider, then Apigee-127 generates the token. 
+2. Apigee-127 receives the request and checks the username/password by calling the `passwordCheck()` helper function.
+3. If the credentials are valid, and if the `client_id` and `client_secret` are valid, an access token is minted. If you're using the Apigee provider for your OAuth, then a call is made to Apigee Edge for the token. If Redis is the provider, then Apigee-127 generates the token. 
 4. The token is returned to the client app.
 5. The client app uses the token to make API calls on protected paths. For example, if the `/weather` path is protected, the call will proceed if a valid access token is provided. Otherwise, the call will fail. 
 
@@ -71,7 +73,7 @@ If you haven't done so, create an Apigee-127 account, and select `apigee` as the
 
 Follow the prompts, entering your Apigee account information. 
 
-> When you select Apigee as the account provider, an API proxy called `apigee-remote-proxy` is automatically deployed to your Apigee Edge organization. This proxy implements the OAuth endpoints needed to get access tokens, refresh tokens, and so on. In addition, you'll get a configured developer app called "Remote Proxy" that includes client ID and secret keys that you can use to make OAuth calls. 
+> When you select Apigee as the account provider, an API proxy called `apigee-remote-proxy` is automatically deployed to your Apigee Edge organization. This proxy implements the OAuth endpoints needed to get access tokens, refresh tokens, and so on. In addition, you'll get a configured developer app called "Remote Proxy" that includes client ID and secret keys that are required when requesting tokens.
 
 Be sure this Apigee account is selected (is the currently active account):
 
@@ -85,7 +87,7 @@ In a terminal window, cd to the root of the example project `./oauth-password-ex
 
 `a127 project edit`
 
-Notice in the `x-volos-resources section` there's a resource called `oauth2`, and that `volos-oauth-apigee provider` is uncommented. The only other option is a Redis implementation. We'll look at that one later in this example.
+Notice in the `x-volos-resources section` there's a resource called `oauth2`, and that `volos-oauth-apigee` provider is uncommented. The only other option is a Redis implementation. We'll look at that one later in this example.
 
 
 ```` yaml
@@ -173,7 +175,7 @@ For this example, the simplest way to get a usable set of client credentials is 
 
 ### <a name="helperfunction"></a>Implementing the password check function
 
-If you use the password grant type, you  must include the `passwordCheck` element in the `x-volos-resources` definition. It refers to a method on a helper function, as we'll explain next. 
+If you use the password grant type, you  **must** include the `passwordCheck` element in the `x-volos-resources` definition. It refers to a method on a helper function, as we'll explain next. 
 
 ```yaml
     passwordCheck:
@@ -181,7 +183,7 @@ If you use the password grant type, you  must include the `passwordCheck` elemen
       function: passwordCheck
 ```
 
-When the authorization server gets a request for an access token, and the grant type is "password", the helper function specified in the `passwordCheck `element is automatically called. In this case, the helper is `./api/helpers/volos.js`. If you omit the `passwordCheck` element, you'll get this error:
+When the authorization server gets a request for an access token, and the grant type is "password", the helper function specified in the `passwordCheck `element is automatically called. In this case, the helper is `./api/helpers/volos.js` and the method is called `passwordCheck`. If you omit the `passwordCheck` element, you'll get this error:
 
 `{"error_description":"Password check function not supplied","error":"internal_error"}`
 
@@ -193,9 +195,9 @@ The actual function is up to you to implement. Here's the code provided with thi
       cb(null, passwordOk);
 ```
 
-This `passwordCheck()` function will succeed if the token request supplies "scott" and "apigee" as the username and password. We'll see an example in the next section.
+The input parameters must be provided in the token request. This `passwordCheck()` function will succeed if the token request supplies "scott" and "apigee" as the username and password. We'll see an example in the next section.
 
-Of course, a production implementation would validate the credentials against something like an LDAP repository or other user store. Typically, the client app provides a form where the user can enter her credentials, which are then passed in the access token request. 
+>Of course, a production implementation would validate the credentials against something like an LDAP repository or other user store. Typically, the client app provides a form where the user can enter her credentials, which are then passed in the access token request. 
 
 ### Requesting an access token
 
@@ -241,7 +243,7 @@ Or, because we're using curl, you can do the auth header with `-u` like this:
   $ curl -u hTYG6fcQGpsO9ZvxjRke1u8mMiQZ4GAJ:hTYG6fcQGpsO9ZvxjRke1u8mMiQZ4GAJ -X POST "https://localhost:10010/accesstoken" -d "grant_type=password&username=scott&password=apigee"
 ````
 
-As successful response looks like this, and you can see that an `access_token `is included. 
+A successful response looks like this, and you can see that an `access_token `is included. 
 
 ````json
     {  
@@ -280,13 +282,53 @@ Start the example project on localhost:
 Call the API, substituting your access token for the bearer token in this example:
 
 ```bash
-  curl -i -H 'Authorization: Bearer 3JTnOwzrfTtnbMGDdys2ZymGAA7t' http://localhost:10010/weather?city=Kinston,NC
+     curl -i -H 'Authorization: Bearer 2ASlJLG4YxqVz1vQWDdQHcfiQg1O' http://localhost:10010/weather?city=Kinston,NC
 ```
  
 That's it, if you see weather data for Kinston, NC, you've succeeded in calling the protected API.
 
 ```json
-  {"coord":{"lon":-77.58,"lat":35.27},"sys":{"type":1,"id":1786,"message":0.1021,"country":"United States of America","sunrise":1416397791,"sunset":1416434512},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"base":"cmc stations","main":{"temp":43,"pressure":1026,"humidity":26,"temp_min":41,"temp_max":44.6},"wind":{"speed":7.78,"deg":190},"clouds":{"all":1},"dt":1416429300,"id":4474436,"name":"Kinston","cod":200}
+  {  
+     "coord":{  
+        "lon":-77.58,
+        "lat":35.27
+     },
+     "sys":{  
+        "type":1,
+        "id":1786,
+        "message":0.2717,
+        "country":"United States of America",
+        "sunrise":1416397791,
+        "sunset":1416434512
+     },
+     "weather":[  
+        {  
+           "id":800,
+           "main":"Clear",
+           "description":"sky is clear",
+           "icon":"01d"
+        }
+     ],
+     "base":"cmc stations",
+     "main":{  
+        "temp":41,
+        "pressure":1028,
+        "humidity":25,
+        "temp_min":39.2,
+        "temp_max":42.8
+     },
+     "wind":{  
+        "speed":5.62,
+        "deg":180
+     },
+     "clouds":{  
+        "all":1
+     },
+     "dt":1416420900,
+     "id":4474436,
+     "name":"Kinston",
+     "cod":200
+  }
 ```
 
 ## <a name="redisprovider"></a>Use Redis as the authorization server
@@ -323,10 +365,35 @@ Let's run the sample using Redis as the authorization server. This option is nic
 
 Note that `init-redis.js` returns a developer object and an application object. Save the credentials for the application (the key and secret) -- you'll need them later.
 
-```
-  THE DEVELOPER: {"id":"9d550e32-bc14-4e29-b4d6-609030b27f8d","uuid":"9d550e32-bc14-4e29-b4d6-609030b27f8d","email":"someperson@example.com","userName":"someperson@example.com","firstName":"Some","lastName":"Person"}
+```json
+  THE DEVELOPER: 
+     {  
+       "id":"40264e1c-5283-48a0-8004-abe41099c068",
+       "uuid":"40264e1c-5283-48a0-8004-abe41099c068",
+       "email":"someperson@example.com",
+       "userName":"someperson@example.com",
+       "firstName":"Some",
+       "lastName":"Person"
+     }
 
-  THE APP: {"id":"21612a13-bdda-43ac-8e7a-d5ee49d365bf","uuid":"21612a13-bdda-43ac-8e7a-d5ee49d365bf","name":"Test App","developerId":"9d550e32-bc14-4e29-b4d6-609030b27f8d","credentials":[{"key":"UnTe0JZmaC9cbVRTI8QW9Kwvza8ZRrKS1RAmpYEOcrc=","secret":"riumzPhjKwzva0A9L5WLin9JsaOWWoPHrNSaqNg1R0A=","status":"valid"}],"scopes":["scope1","scope2"]}
+  THE APP: 
+    {  
+       "id":"0d5a3c57-a3cc-4fdc-8d36-7c6a6b1b00ca",
+       "uuid":"0d5a3c57-a3cc-4fdc-8d36-7c6a6b1b00ca",
+       "name":"Test App",
+       "developerId":"40264e1c-5283-48a0-8004-abe41099c068",
+       "credentials":[  
+          {  
+             "key":"06pXyzIMlRYh2DOMC0SPhjdNvekFSUgWITtsitdSrNs=",
+             "secret":"O8rajU0tdifbIx2EWb59hRSdL2t7rpVzb7Y0KPWRxSQ=",
+             "status":"valid"
+          }
+       ],
+       "scopes":[  
+          "scope1",
+          "scope2"
+       ]
+    }
 
   Client ID: UnTe0JZmaC9cbVRTI8QW9Kwvza8ZRrKS1RAmpYEOcrc=
 
@@ -342,25 +409,71 @@ Note that `init-redis.js` returns a developer object and an application object. 
 5. Send a request to retrieve an access token from the Redis authorization server. Substitute in the client ID and client secret you obtained previously:
 
 ````sh
-  $ curl -X POST "https://localhost:10010/accesstoken" -d "grant_type=password&client_id=hTYG6fcQGpsO9ZvxjRke1u8mMiQZ4GAJ&client_secret=we2YiMmC9kVZ1vjC&username=scott&password=apigee"
+  $ curl -X POST "https://localhost:10010/accesstoken" -d "grant_type=password&client_id=UnTe0JZmaC9cbVRTI8QW9Kwvza8ZRrKS1RAmpYEOcrc=&client_secret=riumzPhjKwzva0A9L5WLin9JsaOWWoPHrNSaqNg1R0A=&username=scott&password=apigee"
 ````
 
 The result includes an access token: 
 
-```
-  {"issued_at":1416421296897,"access_token":"bbTnngjrjFoEP8wy7UXzZgqQwtiAaQOOc3VXf0uipqg=","expires_in":300,"token_type":"bearer"}
+```json
+  {  
+     "issued_at":1417540116086,
+     "access_token":"vghvpI46eOTVxsyYfZ58YGxiTkWEc5maj+vjyF8CA4I=",
+     "expires_in":300,
+     "refresh_token":"DddlxfBCVfMXyM+iB2xf+OetzqnE5QJJfZdQZlkqiZ8=",
+     "token_type":"bearer"
+  }
 ```
 
 6. Now, call the API with the access token:
 
-```bash
-  curl -i -H 'Authorization: Bearer bbTnngjrjFoEP8wy7UXzZgqQwtiAaQOOc3VXf0uipqg=' http://localhost:10010/weather?city=Kinston,NC
+```sh
+  curl -i -H 'Authorization: Bearer vghvpI46eOTVxsyYfZ58YGxiTkWEc5maj+vjyF8CA4I=' http://localhost:10010/weather?city=Kinston,NC
 ```
 
 If the call succeeds, you get the weather report!
 
-````
-  {"coord":{"lon":-77.58,"lat":35.27},"sys":{"type":1,"id":1786,"message":0.2717,"country":"United States of America","sunrise":1416397791,"sunset":1416434512},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"base":"cmc stations","main":{"temp":41,"pressure":1028,"humidity":25,"temp_min":39.2,"temp_max":42.8},"wind":{"speed":5.62,"deg":180},"clouds":{"all":1},"dt":1416420900,"id":4474436,"name":"Kinston","cod":200}
+````json
+  {  
+     "coord":{  
+        "lon":-77.58,
+        "lat":35.27
+     },
+     "sys":{  
+        "type":1,
+        "id":1786,
+        "message":0.2717,
+        "country":"United States of America",
+        "sunrise":1416397791,
+        "sunset":1416434512
+     },
+     "weather":[  
+        {  
+           "id":800,
+           "main":"Clear",
+           "description":"sky is clear",
+           "icon":"01d"
+        }
+     ],
+     "base":"cmc stations",
+     "main":{  
+        "temp":41,
+        "pressure":1028,
+        "humidity":25,
+        "temp_min":39.2,
+        "temp_max":42.8
+     },
+     "wind":{  
+        "speed":5.62,
+        "deg":180
+     },
+     "clouds":{  
+        "all":1
+     },
+     "dt":1416420900,
+     "id":4474436,
+     "name":"Kinston",
+     "cod":200
+  }
 ````
 
 
