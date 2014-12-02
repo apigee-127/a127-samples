@@ -91,7 +91,7 @@ First, we added spike arrest to the `x-a127-services` definition.
 >Note: Unlike some other Volos.js modules that have "in-memory", Redis, and Apigee modes, spike arrest only has an "in-memory" mode. If you deploy to a service like Apigee Edge, spike arrest continues to function as expected.
 
 ````yaml
-x-127-services:
+x-a127-services:
   ## Add the spike arrest module
   spikearrest:
     provider: "volos-spikearrest-memory"

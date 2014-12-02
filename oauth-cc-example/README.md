@@ -82,7 +82,7 @@ In a terminal window, cd to the root of the example project `./oauth-example`, a
 
 `a127 project edit`
 
-Notice in the `x-127-services` section there's a resource called `oauth2`, and that `volos-oauth-apigee provider` is uncommented. The only other option is a Redis implementation. We'll look at that one later in this example.
+Notice in the `x-a127-services` section there's a resource called `oauth2`, and that `volos-oauth-apigee provider` is uncommented. The only other option is a Redis implementation. We'll look at that one later in this example.
 
 
 ```` yaml

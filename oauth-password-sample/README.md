@@ -91,7 +91,7 @@ Notice in the `x-a127-services section` there's a resource called `oauth2`, and 
 
 
 ```` yaml
-  x-127-services:
+  x-a127-services:
     oauth2:
       provider: "volos-oauth-apigee"
       #provider: "volos-oauth-redis"
@@ -339,7 +339,7 @@ Let's run the sample using Redis as the authorization server. This option is nic
 2. Comment the `volos-oauth-apigee` provider and uncomment the `volos-oauth-redis` provider: 
 
 ```yaml
-  x-a127-resources:
+  x-a127-services:
     oauth2:
       #provider: "volos-oauth-apigee"
       provider: "volos-oauth-redis"
