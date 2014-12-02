@@ -235,7 +235,7 @@ Start the example project on localhost:
 Call the API, substituting your access token for the bearer token in this example:
 
 ```bash
-  curl -i -H 'Authorization Bearer: 3JTnOwzrfTtnbMGDdys2ZymGAA7t' http://localhost:10010/weather?city=Kinston,NC
+  curl -i -H 'Authorization: Bearer 3JTnOwzrfTtnbMGDdys2ZymGAA7t' http://localhost:10010/weather?city=Kinston,NC
 ```
  
 That's it, if you see weather data for Kinston, NC, you've succeeded in calling the protected API.
@@ -309,7 +309,7 @@ The result includes an access token:
 6. Now, call the API with the access token:
 
 ```bash
-  curl -i -H 'Authorization Bearer: bbTnngjrjFoEP8wy7UXzZgqQwtiAaQOOc3VXf0uipqg=' http://localhost:10010/weather?city=Kinston,NC
+  curl -i -H 'Authorization: Bearer bbTnngjrjFoEP8wy7UXzZgqQwtiAaQOOc3VXf0uipqg=' http://localhost:10010/weather?city=Kinston,NC
 ```
 
 If the call succeeds, you get the weather report!
