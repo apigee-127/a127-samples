@@ -19,7 +19,7 @@ x-a127-config:
   organization: &organization CONFIGURED
   username: &username CONFIGURED
   password: &password CONFIGURED
-x-a127-servicees:
+x-a127-services:
   spikeArrest:
     provider: "volos-spikearrest-memory"
     options:
