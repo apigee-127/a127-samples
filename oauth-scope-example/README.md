@@ -15,7 +15,6 @@ This example demonstrates how to use OAuth 2.0 scopes to an Apigee-127 API. Scop
 ## <a name="whatis">How it works
 
 
-
 The OAuth 2.0 client credentials grant type is fairly straightforward. A client app requests an access token directly by providing its client ID and client secret keys to an authorization server (for example, Apigee Edge). 
 
 The client ID and secret keys are generated when you register an app with an authorization server. App registration is always required whenever you use OAuth.
