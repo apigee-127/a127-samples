@@ -1,0 +1,31 @@
+{
+  "name": "oauth-scope-example",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "Example demonstrating OAuth scopes in an Apigee 127 Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "3.x.x",
+    "debug": "",
+    "a127-magic": "",
+    "request": "",
+    "volos-oauth-apigee": "",
+    "volos-oauth-redis": "",
+    "volos-management-redis": ""
+  },
+  "devDependencies": {
+    "should": "3.1.x"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "api": {
+    "name": "oauth-scope-example",
+    "basePath": "/oauth-scope-example",
+    "docsPath": "/docs",
+    "main": "app.js"
+  }
+}

@@ -1,0 +1,7 @@
+<CredentialRequest>
+  <ApiProducts>
+    <ApiProduct>FreeProduct</ApiProduct>
+    <ApiProduct>CheapProduct</ApiProduct>
+    <ApiProduct>ExpensiveProduct</ApiProduct>
+  </ApiProducts>
+</CredentialRequest>
