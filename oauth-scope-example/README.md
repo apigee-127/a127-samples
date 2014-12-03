@@ -17,7 +17,7 @@ Scope is a somewhat advanced topic, and we assume you have looked at one of the 
 ## <a name="whatis">How it works
 
 
-OAuth 2.0 scopes limit the amount of access afforded to an access token. When a token is minted, it can be assigned zero or more scopes. For example, you can give an access token a scope of "READ WRITE". So, that access token will only be permitted to access APIs that have READ WRITE scope. 
+OAuth 2.0 scopes limit the amount of access afforded to an access token. When a token is minted, it can be assigned zero or more scopes. A token might have a cope of "READ WRITE". So, that access token will only be permitted to access APIs that have READ WRITE scope. 
 
 Scope is enforced by the APIs themselves. When you attach an OAuth provider to a path in the swagger.yaml file, you can specify a scope for that path. For example:
 
