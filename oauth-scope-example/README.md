@@ -8,20 +8,31 @@
 
 ## <a name="whatisthis"></a>What is this?
 
-This example demonstrates how to use OAuth 2.0 scopes to an Apigee-127 API. Scopes are an OAuth 2.0 feature that let you limit the amount of access an app has to private data owned by the app's end user. 
+This example demonstrates how to use OAuth 2.0 scopes to an Apigee-127 API. Scope is an OAuth 2.0 feature that lets you limit the amount of access an app has to private data owned by the app's end user. 
+
+Scope is a somewhat advanced topic, and we assume you have looked at one of the other OAuth samples, such as oauth-cc-example or oauth-password-sample before continuing. 
 
 > If you are not familiar with OAuth 2.0, there are many resources available on the web. We recommend you start with the [IETF specification](https://tools.ietf.org/html/draft-ietf-oauth-v2-31). It includes a good, general introduction to the OAuth 2.0 framework including scopes.
 
 ## <a name="whatis">How it works
 
 
-The OAuth 2.0 client credentials grant type is fairly straightforward. A client app requests an access token directly by providing its client ID and client secret keys to an authorization server (for example, Apigee Edge). 
+OAuth 2.0 scopes limit the amount of access afforded to an access token. When a token is minted, it can be assigned zero or more scopes. For example, you can give an access token a scope of "READ WRITE". So, that access token will only be permitted to access APIs that have READ WRITE scope. 
 
-The client ID and secret keys are generated when you register an app with an authorization server. App registration is always required whenever you use OAuth.
+Scope is enforced by the APIs themselves. When you attach an OAuth provider to a path in the swagger.yaml file, you can specify a scope for that path. For example:
 
-The client credentials flow looks like this, where Apigee Edge is the authorization server:
+````yaml
+    paths:
+      /weather_rwd:
+        x-swagger-router-controller: weather
+        x-volos-authorizations:
+            oauth2:
+              scope: 'READ WRITE DELETE'
+````
 
-![alt text](../images/oauth-client-cred-flow-3.png)
+Here, the `/weather_rwd` path will only succeed if the access token supports READ WRITE DELETE scope. 
+
+In this example, we'll mint access tokens with different combinations of scopes, and try calling scope-aware APIs with them. 
 
 ## <a name="howdo"></a>How do I get it?
 
