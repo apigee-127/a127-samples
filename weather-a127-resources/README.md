@@ -8,7 +8,7 @@ a127 users a Service Provider Interface to wire services at runtime and makes th
 
 Here is an exmaple of how services are defined in a Swagger spec using the `x-a127-services` annotation:
 
-```
+```yaml
 x-a127-config:
   organization: &organization CONFIGURED
   username: &username CONFIGURED
@@ -42,7 +42,7 @@ In this snippet three resources are defined:
 ##Applying Services as a Policy
 Once these services are defined in the swagger file they can be applied to an API endpoint and/or used programmatically.  The cache and quota services can easily be applied to an operation by using the `x-a127-apply annotation` (the legaxy `x-volos-apply` is still supported).  Here’s an example:
 
-```
+```yaml
 /weather_quota:
     x-swagger-router-controller: weather
     x-a127-apply:
@@ -57,14 +57,14 @@ The links below provide a closer look at the details for:
 ##Accessing Services Programmatically 
 In addition to applying these policies to operations in your Swagger spec you can also access the underlying services directly in your controllers.  All services defined in the x-a127-services section of the Swagger spec can be accessed programmatically in the following manner:
 
-```
+```javascript
 var resource = req.a127.resource({resource_name})
 // where {resource_name} is the name of the resource such as ‘mycache’ or ‘myquota’
 ```
 
 Here is a full snippet showing an example of using the cache service:
 
-```
+```javascript
 function getWeatherByCity(req, res) {
   var cache = req.a127.resource('mycache');
 
