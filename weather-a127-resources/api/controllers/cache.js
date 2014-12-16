@@ -53,21 +53,27 @@ module.exports.delete = function (req, res) {
   var key = req.swagger.params.key.value;
 
   if (cache) {
-    cache.delete(key, function (err, data) {
+    cache.get(key, function (err, data) {
       if (err) {
         res.status(500).send(err)
       }
       else if (data) {
-        console.log('Deleted value for key=' + key + '!');
-        res.json(data);
+        cache.delete(key, function (err) {
+          if (err) {
+            res.status(500).send(err)
+          }
+          else {
+            res.status(200).send('Deleted value for key=' + key + '!');
+          }
+        });
       }
-      else {
-        res.status(404).send('not found');
+      else
+      {
+        res.status(404).send('Key=[' + key + '] not found!');
       }
     });
   }
   else {
-    console.log('Cache not found!');
-    res.status(500).send('cache not found');
+    res.status(500).send('error accessing cache');
   }
 };

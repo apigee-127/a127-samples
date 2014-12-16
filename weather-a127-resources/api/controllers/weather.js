@@ -23,7 +23,7 @@ module.exports.get = function(req, res) {
         console.log('Cache miss!');
 
 
-        console.log('Executing request: ' + url);
+        console.log('-+- Executing request: ' + url);
 
         request.get(url, function (err, response, body) {
           if (err) {
@@ -31,7 +31,7 @@ module.exports.get = function(req, res) {
           }
 
           else {
-            cache.set(city, body, function (err, data) {
+            cache.set(city, body, function (err) {
               if (err) {
                 res.status(500).send(err)
               }

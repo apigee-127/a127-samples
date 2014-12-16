@@ -23,15 +23,66 @@ x-volos-resources:
     provider: volos-cache-memory
     options:
       name: name
-      ttl: 5000
+      ttl: 30000
 paths:
-  /weather:
+  /cache:
+    x-swagger-router-controller: cache
+    delete:
+      operationId: clearCache
+      description: Clear the response cache
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /cache/{key}:
+    x-swagger-router-controller: cache
+    delete:
+      parameters:
+        - name: key
+          in: path
+          description: The city you want weather for in the form [city,state,country]
+          required: true
+          type: string
+
+      description: Remove the cache entry for the specified key
+      responses:
+        "200":
+          description: Success
+        "404":
+          description: Key not found
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse    
+    get:
+      parameters:
+        - name: key
+          in: path
+          description: The city you want weather for in the form [city,state,country]
+          required: true
+          type: string
+      description: Get the value from the cache indicated by the key
+      responses:
+        "200":
+          description: Success
+        "404":
+          description: Key not found
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /weather/{city}:
     x-swagger-router-controller: weather
     get:
+      x-volos-apply:
+        mycache: {}
       description: Returns current weather in the specified city to the caller
       parameters:
         - name: city
-          in: query
+          in: path
           description: The city you want weather for in the form [city,state,country]
           required: true
           type: string
@@ -120,12 +171,6 @@ definitions:
             type: number
           speed:
             type: number
-  HelloWorldResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
   ErrorResponse:
     required:
       - message
