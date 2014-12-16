@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Hello World App that uses a127 resources
+  title: Sample app that uses a127 cache resources programmatically
 # during dev, should point to your local machine
 host: localhost
 # basePath prefixes all resource paths
