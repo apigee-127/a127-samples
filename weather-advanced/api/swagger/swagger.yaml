@@ -93,11 +93,11 @@ paths:
         "200":
           description: Success
           schema: 
-            $ref: WeatherResponse
+            $ref: "#/definitions/WeatherResponse"
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
   /weather_quota:
     x-swagger-router-controller: weather
     x-volos-apply:
@@ -119,11 +119,11 @@ paths:
         "200":
           description: Success
           schema: 
-            $ref: WeatherResponse
+            $ref: "#/definitions/WeatherResponse"
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
   /weather_cached:
     x-swagger-router-controller: weather
     x-volos-apply:
@@ -145,11 +145,11 @@ paths:
         "200":
           description: Success
           schema: 
-            $ref: WeatherResponse
+            $ref: "#/definitions/WeatherResponse"
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
   /weather_secure:
     x-swagger-router-controller: weather
     x-volos-authorizations:
@@ -167,11 +167,11 @@ paths:
         "200":
           description: Success
           schema: 
-            $ref: WeatherResponse
+            $ref: "#/definitions/WeatherResponse"
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 definitions:
   WeatherItem:
     type: object
@@ -239,7 +239,7 @@ definitions:
       weather: 
         type: array
         items: 
-          $ref: WeatherItem
+          $ref: "#/definitions/WeatherItem"
       wind: 
         type: object
         properties: 

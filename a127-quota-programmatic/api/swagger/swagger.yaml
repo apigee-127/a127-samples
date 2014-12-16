@@ -53,7 +53,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse    
+            $ref: "#/definitions/ErrorResponse"
     get:
       parameters:
         - name: key
@@ -70,7 +70,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
   /weather/{city}:
     x-swagger-router-controller: weather
     get:
@@ -87,11 +87,11 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: WeatherResponse
+            $ref: "#/definitions/WeatherResponse"
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 # complex objects have schema definitions
 definitions:
   WeatherItem:
@@ -160,7 +160,7 @@ definitions:
       weather:
         type: array
         items:
-          $ref: WeatherItem
+          $ref: "#/definitions/WeatherItem"
       wind:
         type: object
         properties:

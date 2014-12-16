@@ -44,7 +44,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     put:
       description: Update an app
       responses:
@@ -53,7 +53,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     post:
       description: Create an app
       responses:
@@ -62,7 +62,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
   /apigee/developers:
     x-swagger-router-controller: developers
@@ -74,7 +74,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     put:
       description: Update a developer
       responses:
@@ -83,7 +83,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     post:
       description: Update a developer
       responses:
@@ -92,7 +92,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
   /apigee/developers/{uuid}:
     x-swagger-router-controller: developers
@@ -104,7 +104,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     delete:
       description: Delete a developer
       responses:
@@ -113,7 +113,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
   /apigee/developers/{email}/apps:
     x-swagger-router-controller: developers
@@ -125,7 +125,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
   /apigee/developers/{email}/apps/{appName}:
     x-swagger-router-controller: developers
@@ -137,7 +137,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
 # complex objects have schema definitions
 definitions:
