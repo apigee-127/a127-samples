@@ -11,7 +11,7 @@ consumes:
   - "application/json"
 produces:
   - "application/json"
-x-volos-resources:
+x-a127-services:
   ## Add the spike arrest module
   spikearrest:
     provider: "volos-spikearrest-memory"
@@ -22,13 +22,13 @@ x-volos-resources:
 paths:
   /weather:
     x-swagger-router-controller: weather
-    x-volos-apply:
+    x-a127-apply:
         spikearrest:
           key:
             helper: volos
             function: clientIp
     get:
-      #x-volos-apply:
+      #x-a127-apply:
       #  spikearrest: {}
       description: "Returns current weather in the specified city to the caller"
       operationId: getWeatherByCity

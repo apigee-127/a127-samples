@@ -18,7 +18,7 @@ x-a127-config:
   organization: &organization CONFIGURED
   username: &username CONFIGURED
   password: &password CONFIGURED
-x-volos-resources:
+x-a127-services:
   oauth2:
     provider: "volos-oauth-apigee"
     #provider: "volos-oauth-redis"
@@ -44,7 +44,7 @@ x-volos-resources:
 paths:
   /weather:
     x-swagger-router-controller: weather
-    x-volos-authorizations:
+    x-a127-authorizations:
       oauth2: {}
     get:
       description: "Returns current weather in the specified city to the caller"

@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: "Spike Arrest Example Using the Basic OpenWeatherMap API"
+  title: "Quota Example Using the Basic OpenWeatherMap API"
 host: "localhost"
 basePath: "/" 
 schemes:
@@ -11,7 +11,7 @@ consumes:
   - "application/json"
 produces:
   - "application/json"
-x-volos-resources:
+x-a127-services:
   ## Add the quota module
   quota:
     ## Uncomment one provider
@@ -25,7 +25,7 @@ x-volos-resources:
 paths:
   /weather:
     x-swagger-router-controller: weather
-    x-volos-apply:
+    x-a127-apply:
         quota:
           key:
             helper: volos
