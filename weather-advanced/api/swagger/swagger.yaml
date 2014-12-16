@@ -73,20 +73,20 @@ x-volos-resources:
         refresh: /refresh
 paths:
   /weather:
+    x-swagger-router-controller: weather
     x-volos-apply:
       analytics: {}
       spikeArrest:
         key:
           helper: volos
           function: clientIp
-    x-swagger-router-controller: weather
     get:
       description: Returns current weather in the specified city to the caller
       operationId: getWeatherByCity
       parameters:
         - name: city
           in: query
-          description: The city you want weather for in the form [city,state,country]
+          description: The city, state
           required: true
           type: string
       responses:
