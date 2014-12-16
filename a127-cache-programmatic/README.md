@@ -18,7 +18,7 @@ x-a127-services:
 In this snippet a resource is declared which is named ‘mycache’ which represents a 5s in-memory cache service.  We will interact with this service ahortly.
 
 ##Applying Services as a Policy
-Once these services are defined in the swagger file they can be applied to an API endpoint and/or used programmatically.  The cache and quota services can easily be applied to an operation by using the x-a127-apply annotation (the legaxy x-volos-apply is still supported).  Here’s an example:
+Once these services are defined in the swagger file they can be applied to an API endpoint and/or used programmatically.  The cache and quota services can easily be applied to an operation by using the x-a127-apply annotation (the legaxy `x-volos-apply` is still supported).  Here’s an example:
 
 ```yaml
  /weather_cache:
