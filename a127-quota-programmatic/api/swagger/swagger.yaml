@@ -34,19 +34,7 @@ x-a127-services:
       user: *username
       password: *password
 paths:
-  /cache:
-    x-swagger-router-controller: cache
-    delete:
-      operationId: clearCache
-      description: Clear the response cache
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-  /cache/{key}:
+  /quota/{key}:
     x-swagger-router-controller: cache
     delete:
       parameters:
@@ -83,112 +71,6 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
-
-  /apigee/apps:
-    x-swagger-router-controller: apps
-    get:
-      description: Get a list of apps
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    put:
-      description: Update an app
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    post:
-      description: Create an app
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-
-  /apigee/developers:
-    x-swagger-router-controller: developers
-    get:
-      description: Get a list of developers
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    put:
-      description: Update a developer
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    post:
-      description: Update a developer
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-
-  /apigee/developers/{uuid}:
-    x-swagger-router-controller: developers
-    get:
-      description: Retrieve a developer
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    delete:
-      description: Delete a developer
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-
-  /apigee/developers/{email}/apps:
-    x-swagger-router-controller: developers
-    get:
-      description: Retrieve an app
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-
-  /apigee/developers/{email}/apps/{appName}:
-    x-swagger-router-controller: developers
-    get:
-      description: Retrieve an app for a specific developer
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-
   /weather/{city}:
     x-swagger-router-controller: weather
     get:
