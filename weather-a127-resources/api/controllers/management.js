@@ -2,8 +2,38 @@
 
 var util = require('util');
 
+var ex_developer = {
+  email: "(string)",
+  id: "(string)",
+  userName: "(string)",
+  firstName: "(string)",
+  lastName: "(string)",
+  status: "(string)",
+  attributes: "(hash)"
+};
+
+var ex_application = {
+  name: "(string)",
+  id: "(string)",
+  status: "(string)",
+  callbackUrl: "(string)",
+  developerId: "(string)",
+  attributes: "(hash)",
+  credentials: "[(credentials)]",
+  defaultScope: "(string)",
+  scopes: "(string) or [(string)]"
+};
+
+var ex_credentials = {
+  key: "(string)",
+  secret: "(string)",
+  status: "(string)",
+  attributes: "(object)"
+};
+
+
 module.exports.clearCache = function (req, res) {
-  var cache = req.a127.resource('mycache');
+  var apigee = req.a127.resource('apigee');
 
   if (cache) {
     cache.clear(function (err) {
@@ -67,8 +97,7 @@ module.exports.delete = function (req, res) {
           }
         });
       }
-      else
-      {
+      else {
         res.status(404).send('Key=[' + key + '] not found!');
       }
     });

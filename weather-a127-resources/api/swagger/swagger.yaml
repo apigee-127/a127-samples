@@ -17,13 +17,22 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
-x-a127-config: {}
-x-volos-resources:
+x-a127-config:
+  organization: &organization CONFIGURED
+  username: &username CONFIGURED
+  password: &password CONFIGURED
+x-a127-services:
   mycache:
     provider: volos-cache-memory
     options:
       name: name
       ttl: 30000
+  apigee:
+    provider: volos-management-apigee
+    options:
+      organization: *organization
+      user: *username
+      password: *password
 paths:
   /cache:
     x-swagger-router-controller: cache
@@ -74,6 +83,112 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+
+  /apigee/apps:
+    x-swagger-router-controller: apps
+    get:
+      description: Get a list of apps
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      description: Update an app
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    post:
+      description: Create an app
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  /apigee/developers:
+    x-swagger-router-controller: developers
+    get:
+      description: Get a list of developers
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      description: Update a developer
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    post:
+      description: Update a developer
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  /apigee/developers/{uuid}:
+    x-swagger-router-controller: developers
+    get:
+      description: Retrieve a developer
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      description: Delete a developer
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  /apigee/developers/{email}/apps:
+    x-swagger-router-controller: developers
+    get:
+      description: Retrieve an app
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  /apigee/developers/{email}/apps/{appName}:
+    x-swagger-router-controller: developers
+    get:
+      description: Retrieve an app for a specific developer
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
   /weather/{city}:
     x-swagger-router-controller: weather
     get:
