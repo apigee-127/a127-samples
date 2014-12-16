@@ -1,0 +1,188 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Sample app that uses a127 cache resources programmatically
+# during dev, should point to your local machine
+host: localhost
+# basePath prefixes all resource paths
+basePath: /
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+x-a127-config:
+  organization: &organization CONFIGURED
+  username: &username CONFIGURED
+  password: &password CONFIGURED
+x-a127-services:
+  mycache:
+    provider: volos-cache-memory
+    options:
+      name: name
+      ttl: 30000
+  apigee:
+    provider: volos-management-apigee
+    options:
+      organization: *organization
+      user: *username
+      password: *password
+paths:
+  /cache:
+    x-swagger-router-controller: cache
+    delete:
+      operationId: clearCache
+      description: Clear the response cache
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /cache/{key}:
+    x-swagger-router-controller: cache
+    delete:
+      parameters:
+        - name: key
+          in: path
+          description: The city you want weather for in the form [city,state,country]
+          required: true
+          type: string
+
+      description: Remove the cache entry for the specified key
+      responses:
+        "200":
+          description: Success
+        "404":
+          description: Key not found
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    get:
+      parameters:
+        - name: key
+          in: path
+          description: The city you want weather for in the form [city,state,country]
+          required: true
+          type: string
+      description: Get the value from the cache indicated by the key
+      responses:
+        "200":
+          description: Success
+        "404":
+          description: Key not found
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /weather/{city}:
+    x-swagger-router-controller: weather
+    get:
+      x-volos-apply:
+        mycache: {}
+      description: Returns current weather in the specified city to the caller
+      parameters:
+        - name: city
+          in: path
+          description: The city you want weather for in the form [city,state,country]
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/WeatherResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+# complex objects have schema definitions
+definitions:
+  WeatherItem:
+    type: object
+    properties:
+      description:
+        type: string
+      icon:
+        type: string
+      id:
+        type: number
+      main:
+        type: string
+  WeatherResponse:
+    properties:
+      base:
+        type: string
+      clouds:
+        type: object
+        properties:
+          all:
+            type: number
+      cod:
+        type: number
+      coord:
+        type: object
+        properties:
+          lat:
+            type: number
+          lon:
+            type: number
+      dt:
+        type: number
+      id:
+        type: number
+      main:
+        type: object
+        properties:
+          humidity:
+            type: number
+          pressure:
+            type: number
+          temp_max:
+            type: number
+          temp_min:
+            type: number
+          temp:
+            type: number
+      name:
+        type: string
+      sys:
+        type: object
+        properties:
+          country:
+            type: string
+          id:
+            type: number
+          message:
+            type: number
+          sunrise:
+            type: number
+          sunset:
+            type: number
+          type:
+            type: number
+      weather:
+        type: array
+        items:
+          $ref: "#/definitions/WeatherItem"
+      wind:
+        type: object
+        properties:
+          deg:
+            type: number
+          speed:
+            type: number
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
