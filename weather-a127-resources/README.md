@@ -1,103 +1,120 @@
+# Programmatic Access to a127 Services
+
 ## What is this?
+This is a sample project for a127 which shows how you can use services defined in an a127 project (Swagger spec) programmatically in your Controller files (API Implementation).
 
-This is an example Apigee-127 project that shows you how to use response caching. API responses can be cached in-memory, with Redis, or with Apigee.
+##Defining Service Configurations
+a127 users a Service Provider Interface to wire services at runtime and makes them available to be applied as a policy (caching, quota) or to be used manually/programmatically in source code.  
 
-This example also uses a helper function in /helpers/volos.js to parse the 'city' parameter from the API request, and uses it as the cache key.
+Here is an exmaple of how services are defined in a Swagger spec using the `x-a127-services` annotation:
 
-## What is caching?
-
-Caching API responses is an easy way to improve the performance of your a127 API by returning the cached response or common requests, rather than forming a new response every time the same request is executed. This is particularly helpful if your API calls other third-party APIs or data sources to construct its responses.
-
-## How do I use it?
-
-#### 1) Clone this repository from Git
-```bash 
-$ git clone https://github.com/apigee-127/a127-samples
+```
+x-a127-config:
+  organization: &organization CONFIGURED
+  username: &username CONFIGURED
+  password: &password CONFIGURED
+x-a127-services:
+  mycache:
+    provider: volos-cache-memory
+    options:
+      name: name
+      ttl: 5000
+  myquota:
+    provider: volos-quota-memory
+    options:
+      timeUnit: minute
+      interval: 1
+      allow: 2
+  apigeemanagement:
+    provider: volos-management-apigee
+    options:
+      organization: *organization
+      user: *username
+      password: *password
 ```
 
-#### 2) Install npm dependencies for the project
-```bash
-$ cd a127-samples/cache-example
-$ npm install
+In this snippet three resources are defined:
+
+* A resource named ‘mycache’ which represents a 5s in-memory cache service
+* A resource named ‘myquota’ which represents a 2-request per-minute quota service
+* A resource named ‘apigeemanagement’ which represents a service that you can use to interact with the Apigee management API 
+
+##Applying Services as a Policy
+Once these services are defined in the swagger file they can be applied to an API endpoint and/or used programmatically.  The cache and quota services can easily be applied to an operation by using the `x-a127-apply annotation` (the legaxy `x-volos-apply` is still supported).  Here’s an example:
+
+```
+/weather_quota:
+    x-swagger-router-controller: weather
+    x-a127-apply:
+      mycache: {}
+      myquota: {}
+```
+The links below provide a closer look at the details for:
+
+* Caching as a policy: [https://github.com/apigee-127/a127-documentation/wiki/Quick-Start:-Add-Caching](https://github.com/apigee-127/a127-documentation/wiki/Quick-Start:-Add-Caching)
+* Quota as a policy: [https://github.com/apigee-127/a127-documentation/wiki/Quick-Start:-Add-Quota](https://github.com/apigee-127/a127-documentation/wiki/Quick-Start:-Add-Quota)
+
+##Accessing Services Programmatically 
+In addition to applying these policies to operations in your Swagger spec you can also access the underlying services directly in your controllers.  All services defined in the x-a127-services section of the Swagger spec can be accessed programmatically in the following manner:
+
+```
+var resource = req.a127.resource({resource_name})
+// where {resource_name} is the name of the resource such as ‘mycache’ or ‘myquota’
 ```
 
-#### 3) Uncomment one of the cache providers in the a127 project swagger file with the swagger editor
-- Open the Swagger editor:
-```bash
-$ a127 project edit
+Here is a full snippet showing an example of using the cache service:
+
 ```
-- Uncomment one provider under x-volos-resources, e.g.:
-```yaml
-x-volos-resources:
-  #Defines our cache
-  cache:
-      ## Uncomment one cache provider
-      provider: volos-cache-apigee
-      #provider: volos-cache-memory
-      #provider: volos-cache-redis
-      options:
-        name: weather-cache
-        ttl: 30000
-```
+function getWeatherByCity(req, res) {
+  var cache = req.a127.resource('mycache');
 
-#### 4) Start your a127 API
+  var city = req.swagger.params.city.value;
+  var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial";
 
-**Apigee caching:**
+  console.log('Executing request: ' + url);
 
-- If you don't have an account, create one:
-```bash
-$ a127 account create
-```
+  // check to make sure you have a pointer to the cache
+  if (cache) {
+  	
+  	// using 'city' as a key perform a get on the cache.  The function will be executed and receive a value in the 'data' parameter if there is a cache hit
+    cache.get(city, function (err, data) {
+      // for simplicity if there is an error accessing the cache return an error
+      if (err) {
+        res.status(500).send(err)
+      }
 
-- Deploy your project to Apigee:
-```bash
-$ a127 project deploy
-```
-Once your project is successfully deployed to Apigee, you will see a response like this:
-```bash
-name: cache-sample
-environment: test
-revision: 2
-state: deployed
-basePath: /
-uris:
-  - 'http://yourApigeeOrg-test.apigee.net/cache-sample'
-  - 'https://yourApigeeOrg-test.apigee.net/cache-sample'
-```
-Take note of the uris that are returned. You will need these to send requests to your API later.
+	  // if there is a cache hit, return the data as JSON in the response
+      else if (data) {
+        console.log('Cache hit!');
+        res.json(data);
+      }
+      
+      // if there is a cache miss, perform the API call
+      else {
+        request.get(url, function (err, response, body) {
+          if (err) {
+            res.status(500).send(err)
+          }
+          // if the request is successful store the result in the cache and return the response
+          else {
+            console.log('Cache miss!');
+            cache.set(city, body, function (err, data) {
+              if (err) {
+                res.status(500).send(err)
+              }
 
-**Redis caching:**
-
-- Run the following to download Redis and create a Redis instance running on localhost:
-```bash
-$ sh redis.sh
-``` 
-- Start your API on localhost:
-```bash
-$ a127 project start
-```
-
-**In-memory caching:**
-
-Start your API on localhost:
-```bash
-$ a127 project start
+              else {
+                res.send(data);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  else {
+    console.log('Cache not found!');
+    request.get(url).pipe(res);
+  }
 ```
 
-#### 5) Issue curl commands or use Postman to hit the API.
-
-The first time you send the request the response will be cached. The cached response will persist for 60 seconds.
-
-**Apigee caching:**
-
-Note that you will need to use the URL provided when you ran 'a127 project deploy'
-
-```bash
-$ curl http://yourApigeeOrg-test.apigee.net/cache-sample/weather?city=Kinston,NC
-```
-
-**Redis or in-memory caching:**
-
-```bash
-$ curl http://localhost:10010/weather?city=Kinston,NC
-```
