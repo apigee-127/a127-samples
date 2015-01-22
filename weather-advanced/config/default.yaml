@@ -1,8 +1,4 @@
-devRequest:
-  firstName: Remote
-  lastName: Proxy
-  email: remote-proxy@apigee.com
-  userName: remote-proxy@apigee.com
-
-appRequest:
-  name: Remote Proxy
+includePasswordInSecrets: true
+apigee:
+  developerEmail: remote-proxy@apigee.com
+  applicationName: remoteproxy

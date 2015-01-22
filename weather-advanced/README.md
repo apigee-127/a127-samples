@@ -13,10 +13,19 @@ It has two samples:
 - Weather Basic
 - Weather Advanced (this example)
 
-2) Create an Account configuration using `a127 account create`: [a127 Account Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#a127-account)
+2) Create an Account configuration using `a127 account create`:
+[a127 Account Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#a127-account)
 You will need an account on Apigee Developer (free) for the advanced example.
 
-3) Once you have it cloned from git and an account created successfully with `a127 account create`:
+3) Create an Apigee Remote Service called "RemoteProxy" using `a127 service create RemoteProxy`:
+[a127 Service Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#service)
+Note: The name of the service is important - as this is what is pre-configured for you in your config/default.yaml.
+
+4) Bind the RemoteService to your project using `a127 project bind RemoteProxy`:
+[a127 Service Reference](https://github.com/apigee-127/a127-documentation/wiki/Apigee-127-command-line-reference#service)
+Note: The name of the service is important - as this is what is pre-configured for you in your config/default.yaml.
+
+5) Once you have it cloned from git and an account created successfully with `a127 account create`:
 
 ```bash
 $ cd a127-samples/weather-advanced
@@ -24,11 +33,11 @@ $ npm install
 $ a127 project start
 ```
 
-4) Once you have the project started you can issue curl commands or use Postman to hit the API:
+6) Once you have the project started you can issue curl commands or use Postman to hit the API:
 
 ### Direct API call to OpenWeatherMap API:
 ```bash
-$ curl http://localhost:10010/weather?city=Kinston,NC
+$ curl http://127.0.0.1:10010/weather?city=Kinston,NC
 ```
 When you hit this API you will see one line in the console from `a127 project start` every time is run:
 
@@ -36,7 +45,7 @@ When you hit this API you will see one line in the console from `a127 project st
 
 ### Cached (10s TTL) API call to OpenWeatherMap API:
 ```bash
-$ curl http://localhost:10010/weather_cached?city=Kinston,NC
+$ curl http://127.0.0.1:10010/weather_cached?city=Kinston,NC
 ```
 When you hit this API you will see one output like the following in the console from `a127 project start`:
 
@@ -56,14 +65,14 @@ You will always see `Cache Key: Kinston, NC` and you will only see `Executing re
 Execute three calls to the endpoint within one minute.  The first two will succeed, the third will fail:
 
 ```bash
-$ curl http://localhost:10010/weather_quota?city=Kinston,NC
-$ curl http://localhost:10010/weather_quota?city=Kinston,NC
-$ curl http://localhost:10010/weather_quota?city=Kinston,NC
+$ curl http://127.0.0.1:10010/weather_quota?city=Kinston,NC
+$ curl http://127.0.0.1:10010/weather_quota?city=Kinston,NC
+$ curl http://127.0.0.1:10010/weather_quota?city=Kinston,NC
 ```
 
 Client Output: 
 
-    $ curl http://localhost:10010/weather_quota\?city\=Kinston,NC
+    $ curl http://127.0.0.1:10010/weather_quota\?city\=Kinston,NC
     Error: exceeded quota<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota-connect.js:92:15<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota.js:137:5<br> &nbsp; &nbsp;at MemoryQuotaSpi.apply (/Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/lib/memoryquota.js:88:3)<br> &nbsp; &nbsp;at Quota.apply (/Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota.js:136:14)<br> &nbsp; &nbsp;at applyQuota (/Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota-connect.js:82:14)<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-quota-memory/node_modules/volos-quota-common/lib/quota-connect.js:49:5<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/a127-magic/node_modules/volos-swagger/lib/connect-middleware.js:136:9<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/volos-analytics-common/lib/analytics-connect.js:39:3<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/a127-magic/node_modules/volos-swagger/lib/connect-middleware.js:136:9<br> &nbsp; &nbsp;at /Users/ApigeeCorporation/projects/a127-samples/weather-advanced/node_modules/a127-magic/node_modules/volos-swagger/lib/connect-middleware.js:139:41
 
 Server Output: 
@@ -93,10 +102,10 @@ When the project starts it will log messages to the console like the following:
 ```
 ---------
 try this Cached call (10s TTL):
-curl http://localhost:10010/weather_cached?city=Kinston,NC
+curl http://127.0.0.1:10010/weather_cached?city=Kinston,NC
 ---------
 try this call which has a 2-per minute Quota:
-curl http://localhost:10010/weather_quota?city=Kinston,NC
+curl http://127.0.0.1:10010/weather_quota?city=Kinston,NC
 ---------
 Client ID: k6l4TO4DsnQr72LdAIZAxWVZKhXhfM5I
 Client Secret: tske5wxrUKZsbAbp
@@ -106,28 +115,28 @@ listening on 10010
 example curl commands:
 
 Get a Client Credential Token:
-curl -X POST "http://localhost:10010/accesstoken" -d "grant_type=client_credentials&client_id=k6l4TO4DsnQr72LdAIZAxWVZKhXhfM5I&client_secret=tske5wxrUKZsbAbp"
+curl -X POST "http://127.0.0.1:10010/accesstoken" -d "grant_type=client_credentials&client_id=k6l4TO4DsnQr72LdAIZAxWVZKhXhfM5I&client_secret=tske5wxrUKZsbAbp"
 
 Weather Lookup, secured with OAuth:
-curl -H "Authorization: Bearer MNwqguWBakpicmV6bgsXhGL5RAqd" "http://localhost:10010/weather_secure?city=Kinston,NC"
+curl -H "Authorization: Bearer MNwqguWBakpicmV6bgsXhGL5RAqd" "http://127.0.0.1:10010/weather_secure?city=Kinston,NC"
 ```
 
 Hit the OAuth-secured API Proxy with the token:
 
 ```bash
-$ curl -H "Authorization: Bearer MNwqguWBakpicmV6bgsXhGL5RAqd" "http://localhost:10010/weather_secure?city=Kinston,NC"
+$ curl -H "Authorization: Bearer MNwqguWBakpicmV6bgsXhGL5RAqd" "http://127.0.0.1:10010/weather_secure?city=Kinston,NC"
 ```
 Hit the OAuth-secured API Proxy with an invalid token:
 
 ```bash
-$ curl -H "Authorization: Bearer foobar" "http://localhost:10010/weather_secure?city=Kinston,NC"
+$ curl -H "Authorization: Bearer foobar" "http://127.0.0.1:10010/weather_secure?city=Kinston,NC"
 {"error_description":"","error":"invalid_token"}%
 ```
 
 Get a new Token:
 
 ```bash
-$ curl -X POST "http://localhost:10010/accesstoken" -d "grant_type=client_credentials&client_id=k6l4TO4DsnQr72LdAIZAxWVZKhXhfM5I&client_secret=tske5wxrUKZsbAbp"
+$ curl -X POST "http://127.0.0.1:10010/accesstoken" -d "grant_type=client_credentials&client_id=k6l4TO4DsnQr72LdAIZAxWVZKhXhfM5I&client_secret=tske5wxrUKZsbAbp"
 ```
 
 If you would like to see the interaction that Volos.js libraries have with Apigee Edge you can use the [Trace Tool](http://apigee.com/docs/gateway-services/content/using-trace-tool-0) and start a trace session on the `apigee-remote-proxy`.

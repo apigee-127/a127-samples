@@ -14,14 +14,14 @@ consumes:
 produces:
   - application/json
 x-a127-config:
-  apigeeProxyKey: &apigeeProxyKey CONFIGURED
-  apigeeProxyUri: &apigeeProxyUri CONFIGURED
+  RemoteProxy.key: &apigeeProxyKey CONFIGURED
+  RemoteProxy.uri: &apigeeProxyUri CONFIGURED
   organization: &organization CONFIGURED
   username: &username CONFIGURED
   password: &password CONFIGURED
 x-volos-resources:
   spikeArrest:
-    provider: "volos-spikearrest-memory"
+    provider: volos-spikearrest-memory
     options:
       timeUnit: "minute"
       bufferSize: 10

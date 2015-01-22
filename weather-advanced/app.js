@@ -35,11 +35,11 @@ function printHelp(config) {
 		console.log('curl http://127.0.0.1:%s/weather?city=Kinston,NC',PORT);
 
 		console.log('---------');
-		console.log('try this Cached call (10s TTL):');
+		console.log('Try this Cached call (10s TTL):');
 		console.log('curl http://127.0.0.1:%s/weather_cached?city=Kinston,NC',PORT);
 
 		console.log('---------');
-		console.log('try this call which has a 2-per minute Quota:');
+		console.log('Try this call which has a 2-per minute Quota:');
 		console.log('curl http://127.0.0.1:%s/weather_quota?city=Kinston,NC',PORT);
 
 		console.log('---------');
@@ -48,7 +48,7 @@ function printHelp(config) {
       '"grant_type=client_credentials&client_id=%s&client_secret=%s"\n',
       PORT, encodeURIComponent(creds.clientId), encodeURIComponent(creds.clientSecret));
 
-    console.log('Weather Lookup:');
+    console.log('OAuth Secured Weather Lookup:');
     console.log('curl -H "Authorization: Bearer %s" "http://127.0.0.1:%s/weather_secure?city=Kinston,NC"\n',
       creds.accessToken, PORT);
   });
@@ -56,8 +56,8 @@ function printHelp(config) {
 
 function createToken(management, oauth, config, cb) {
 
-  management.getDeveloperApp(config.devRequest.userName, config.appRequest.name, function(err, app) {
-    if (err) { cb(err); }
+  management.getDeveloperApp(config.apigee.developerEmail, config.apigee.applicationName, function(err, app) {
+    if (err) { return cb(err); }
 
     var tokenRequest = {
       clientId: app.credentials[0].key,
@@ -66,8 +66,7 @@ function createToken(management, oauth, config, cb) {
     };
 
     oauth.spi.createTokenClientCredentials(tokenRequest, function(err, result) {
-      if (err) { cb(err); }
-
+      if (err) { return cb(err); }
       var accessToken = result.access_token;
 
       console.log('Client ID: %s', app.credentials[0].key);
