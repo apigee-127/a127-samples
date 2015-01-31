@@ -20,7 +20,8 @@
     "volos-quota-memory": "",
     "volos-quota-redis": "",
     "volos-oauth-redis": "",
-    "volos-oauth-apigee": ""
+    "volos-oauth-apigee": "",
+    "volos-management-apigee":""
   },
   "devDependencies": {
     "should": "3.1.x"

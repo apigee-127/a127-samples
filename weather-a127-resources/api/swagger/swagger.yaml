@@ -82,8 +82,7 @@ paths:
         default:
           description: Error
           schema:
-<<<<<<< HEAD
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
   /apigee/apps:
     x-swagger-router-controller: apps
@@ -95,7 +94,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     put:
       description: Update an app
       responses:
@@ -104,7 +103,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     post:
       description: Create an app
       responses:
@@ -113,7 +112,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
   /apigee/developers:
     x-swagger-router-controller: developers
@@ -125,7 +124,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     put:
       description: Update a developer
       responses:
@@ -134,7 +133,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     post:
       description: Update a developer
       responses:
@@ -143,45 +142,74 @@ paths:
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
   /apigee/developers/{uuid}:
     x-swagger-router-controller: developers
     get:
       description: Retrieve a developer
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the developer
+          required: true
+          type: string
       responses:
         "200":
           description: Success
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
     delete:
       description: Delete a developer
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the developer
+          required: true
+          type: string
       responses:
         "200":
           description: Success
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
   /apigee/developers/{email}/apps:
     x-swagger-router-controller: developers
     get:
       description: Retrieve an app
+      parameters:
+        - name: email
+          in: path
+          description: The email of the developer
+          required: true
+          type: string
       responses:
         "200":
           description: Success
         default:
           description: Error
           schema:
-            $ref: ErrorResponse
+            $ref: "#/definitions/ErrorResponse"
 
   /apigee/developers/{email}/apps/{appName}:
     x-swagger-router-controller: developers
     get:
       description: Retrieve an app for a specific developer
+      parameters:
+        - name: email
+          in: path
+          description: The email of the developer
+          required: true
+          type: string
+        - name: appName
+          in: path
+          description: The app name
+          required: true
+          type: string
       responses:
         "200":
           description: Success
@@ -278,7 +306,7 @@ definitions:
       weather:
         type: array
         items:
-          $ref: WeatherItem
+          $ref: "#/definitions/WeatherItem"
       wind:
         type: object
         properties:

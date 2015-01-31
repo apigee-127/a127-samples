@@ -23,7 +23,9 @@
     "volos-oauth-redis": "",
     "volos-quota-apigee": "",
     "volos-quota-memory": "",
-    "volos-quota-redis": ""
+    "volos-quota-redis": "",
+    "volos-spikearrest-memory": "",
+    "volos-spikearrest-memory": ""
   },
   "devDependencies": {
     "should": "3.1.x"
