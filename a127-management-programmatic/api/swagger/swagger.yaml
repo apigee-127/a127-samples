@@ -98,6 +98,11 @@ paths:
     x-swagger-router-controller: developers
     get:
       description: Retrieve a developer
+      parameters:
+        - name: uuid
+          description: UUID of the developer
+          in: path
+          type: string
       responses:
         "200":
           description: Success
@@ -107,6 +112,11 @@ paths:
             $ref: "#/definitions/ErrorResponse"
     delete:
       description: Delete a developer
+      parameters:
+        - name: uuid
+          description: UUID of the developer
+          in: path
+          type: string
       responses:
         "200":
           description: Success
@@ -119,6 +129,11 @@ paths:
     x-swagger-router-controller: developers
     get:
       description: Retrieve an app
+      parameters:
+        - name: email
+          description: Email of developer
+          in: path
+          type: string
       responses:
         "200":
           description: Success
@@ -131,6 +146,15 @@ paths:
     x-swagger-router-controller: developers
     get:
       description: Retrieve an app for a specific developer
+      parameters:
+        - name: email
+          description: Email of developer
+          in: path
+          type: string
+        - name: appName
+          description: The app name
+          in: path
+          type: string
       responses:
         "200":
           description: Success
