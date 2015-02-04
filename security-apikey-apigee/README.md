@@ -22,16 +22,13 @@ $ cd a127-samples/security-apikey-apigee
 $ npm install
 ```
 
-#### 4) Create an account and a project
+#### 4) Create an account with the 'apigee' provider
 
-1. If you do not have one already, create an a127 account and project. Be sure to select the `apigee` provider when you create the account:
+1. If you do not have one already, create an a127 account. Be sure to select the `apigee` provider when you create the account:
 
     `a127 account create myaccount`
 
-    `a127 project create myproject`
-
-
-3. Create a RemoteProxy service and bind it to your project. See also [Understanding remote services](https://github.com/apigee-127/a127-documentation/wiki/Services).
+2. Create a RemoteProxy service and bind it to your project:
 
     `a127 service create myremoteservice`
 
@@ -40,12 +37,12 @@ $ npm install
 
 #### 3) Edit the secrets.js file
 
-1. cd to the ./config directory.
-2. Copy secrets_sample.js to secrets.js.
-3. Open secrets.js and enter these values:
+1. CD to the `./config` directory.
+2. Copy `secrets_sample.js` to `secrets.js`.
+3. Open `secrets.js` and enter these values. These credentials are required for the `volos-management-apigee` API, which we use to obtain the API key from Apigee Edge programmatically. 
 
-    * organization: The name of the organization where the service is deployed. It should be the same as the organization in your account. Enter `a127 account show` to check. 
-    * user: Your username on Apigee Edge.
+    * organization: The name of the organization where the service is deployed. It should be the same as the organization listed in your account. Enter `a127 account show` to check. 
+    * user: Your username on Apigee Edge. This the same as the email address for your Edge account.
     * password: Your password on Apigee Edge.
 
 #### 3) Start your a127 API
