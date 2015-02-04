@@ -18,8 +18,8 @@ consumes:
 produces:
   - application/json
 x-a127-config:
-      rptest5.key: &apigeeProxyKey CONFIGURED
-      rptest5.uri: &apigeeProxyUri CONFIGURED
+      myremoteservice.key: &apigeeProxyKey CONFIGURED
+      myremoteservice.uri: &apigeeProxyUri CONFIGURED
 x-a127-services:
       apiKeyQuery:
         provider: volos-oauth-apigee
