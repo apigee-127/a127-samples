@@ -50,7 +50,7 @@ $ npm install
 Start your API on localhost:
 ```bash
         $ a127 project start
-        Starting: /Users/ApigeeCorporation/Home/Dev/GITHUB/wwitman/a127-samples/security-apikey-apigee/app.js...
+        Starting: /Users/ApigeeCorporation/Home/Dev/GITHUB/apigee-127/a127-samples/security-apikey-apigee/app.js...
           project started here: http://localhost:10010
           project will restart on changes.
           to restart at any time, enter `rs`
@@ -84,7 +84,7 @@ Here are the steps for deploying to Apigee Edge:
 Once your project is successfully deployed to Apigee, you will see a response like this:
 ```bash
     $ a127 project deploy --upload
-        Deploying project apikey-apigee to wwitman-12...
+        Deploying project apikey-apigee to myaccount...
 
         Deployed:
           name: apikey-apigee
@@ -93,8 +93,8 @@ Once your project is successfully deployed to Apigee, you will see a response li
           state: deployed
           basePath: /
           uris:
-            - 'http://wwitman-prod.apigee.net/apikey-apigee'
-            - 'https://wwitman-prod.apigee.net/apikey-apigee'
+            - 'http://myorg-prod.apigee.net/apikey-apigee'
+            - 'https://myorg-prod.apigee.net/apikey-apigee'
 
         Adding resources...
           GET /hello
