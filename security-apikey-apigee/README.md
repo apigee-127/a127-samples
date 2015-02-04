@@ -57,17 +57,17 @@ Start your API on localhost:
         Creating developer a127sample@apigee.com
         Creating application A127 Sample App for developer EyWXuc2j9wwFslbk
         try this:
-        curl 'http://127.0.0.1:10010/hello?name=Scott&apiKey=zBqTKxoLQRWAmfIQRSqNihqpmtgz3HR'
+        curl 'http://127.0.0.1:10010/hello?name=Scott&apiKey=zBqTKxoLQRWAmfIQRShqpmtgz3HR'
 ```
 
 #### 4) Call the API
 
-When the project's main file `app.js` uses [Volos.js management API](https://github.com/apigee-127/volos/tree/master/management/common) to create a developer and developer app on Apigee Edge. The developer app provides a client ID, which is used as the API key to make API calls.
+The project's main file `app.js` uses [Volos.js management API](https://github.com/apigee-127/volos/tree/master/management/common) to create a developer and developer app on Apigee Edge. The developer app provides a client ID, which is used as the API key to make API calls.
 
 Try calling the API with the curl command that is output when you start the project:
 
 ```bash
-  $ curl 'http://127.0.0.1:10010/hello?name=Scott&apiKey=zBqTKxoLQRWAmfIQRSqNihqpmtgz3HR'
+  $ curl 'http://127.0.0.1:10010/hello?name=Scott&apiKey=zBqTKxoLQRWAmfIQRShqpmtgz3HR'
 ```
 
 On success, the API returns "Hello, Scott". 
@@ -110,7 +110,7 @@ To call the API, you can use the API key that was created when you ran the proje
 Following this example, the API would look like this. Substitute values for your organization, environment, and API key:
 
 ```bash
-    $ curl 'https://yourOrg-yourEnv.apigee.net/apikey-apigee/hello?name=Scott&apiKey=zBqTKxoLQRWAmfIQRSqNihqpmtgz3HR'
+    $ curl 'https://yourOrg-yourEnv.apigee.net/apikey-apigee/hello?name=Scott&apiKey=zBqTKxoLQRWAmfIQRShqpmtgz3HR'
 ```
 
 ## <a name="aboutthe"></a>About the project implementation
