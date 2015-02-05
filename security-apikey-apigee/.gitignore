@@ -1,3 +1,6 @@
+# IDE files
+.idea
+
 # Logs
 logs
 *.log
@@ -19,17 +22,15 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
-# a127 deployment files
-.a127_env
-.a127_secrets
-.a127_services
-
 # Dependency directory
-# Deployed apps should consider commenting this line out:
-# see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
+# Commenting this out is preferred by some people, see
+# https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules
-weather-advanced/app.js.BACKUP.40209.js
-weather-advanced/app.js.BASE.40209.js
-weather-advanced/app.js.LOCAL.40209.js
-weather-advanced/app.js.REMOTE.40209.js
-sandbox
+
+# Users Environment Variables
+.lock-wscript
+
+# Apigee 127 deployment
+config/.a127_env
+config/.a127_secrets
+config/.a127_services
