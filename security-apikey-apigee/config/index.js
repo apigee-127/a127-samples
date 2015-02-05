@@ -23,10 +23,6 @@
  ****************************************************************************/
 'use strict';
 
-var secrets = require('./secrets');
-exports.apigee = secrets.apigee;
-
-
 var Management = require('volos-management-apigee');
 var OAuth = require('volos-oauth-apigee');
 

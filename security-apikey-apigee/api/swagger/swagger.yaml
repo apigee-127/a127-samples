@@ -20,6 +20,9 @@ produces:
 x-a127-config:
       myremoteservice.key: &apigeeProxyKey CONFIGURED
       myremoteservice.uri: &apigeeProxyUri CONFIGURED
+      organization: &organization CONFIGURED
+      username: &username CONFIGURED
+      password: &password CONFIGURED
 x-a127-services:
       apiKeyQuery:
         provider: volos-oauth-apigee

@@ -22,7 +22,7 @@ $ cd a127-samples/security-apikey-apigee
 $ npm install
 ```
 
-#### 4) Create an account with the 'apigee' provider
+#### 3) Create an account with the 'apigee' provider
 
 1. If you do not have one already, create an a127 account. Be sure to select the `apigee` provider when you create the account:
 
@@ -34,18 +34,7 @@ $ npm install
 
     `a127 project bind myremoteservice`
 
-
-#### 3) Edit the secrets.js file
-
-1. CD to the `./config` directory.
-2. Copy `secrets_sample.js` to `secrets.js`.
-3. Open `secrets.js` and enter these values. These credentials are required for the `volos-management-apigee` API, which we use to obtain the API key from Apigee Edge programmatically. 
-
-    * organization: The name of the organization where the service is deployed. It should be the same as the organization listed in your account. Enter `a127 account show` to check. 
-    * user: Your username on Apigee Edge. This the same as the email address for your Edge account.
-    * password: Your password on Apigee Edge.
-
-#### 3) Start your a127 API
+#### 4) Start your a127 API
 
 Start your API on localhost:
 ```bash
@@ -60,7 +49,15 @@ Start your API on localhost:
         curl 'http://127.0.0.1:10010/hello?name=Scott&apiKey=zBqTKxoLQRWAmfIQRShqpmtgz3HR'
 ```
 
-#### 4) Call the API
+>Note: If you examine the main Node.js file in the project, `app.js`, you'll see that we use the Management API of Volos.js to create entities on Apigee Edge and retrieve the API key from Edge. You can find docs on this API in the [volos project on GitHub](https://github.com/apigee-127/volos/tree/master/management/common). 
+
+>**Important:**  Open `./config/default.yaml`. Notice that it has one configuration setting in it:
+
+    `includePasswordInSecrets: true`
+
+This setting is false by default. When set to true, the password that you specified when you created your a127 account is stored in `./config/.a127_secrets`. This file is generated each time you start your a127 project, and the values in it are available to your project through the configuration system. To use the Management API, a user, password, and organization are required parameters, and in this implementation, they are obtained automatically from this configuration system.
+
+#### 5) Call the API
 
 The project's main file `app.js` uses [Volos.js management API](https://github.com/apigee-127/volos/tree/master/management/common) to create a developer and developer app on Apigee Edge. The developer app provides a client ID, which is used as the API key to make API calls.
 

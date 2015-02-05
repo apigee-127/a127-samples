@@ -3,35 +3,37 @@
 var a127 = require('a127-magic');
 var express = require('express');
 var app = express();
-var config = require('./config');
-var volos = config.volos;
-var management = volos.Management.create(config.apigee);
+var info = require('./config');
+var volos = info.volos;
 
 module.exports = app; // for testing
 
 a127.init(function(config) {
-
   app.use(a127.middleware(config));
   app.listen(process.env.PORT || 10010);
-  createApp(management, function(err, app) {
+  createApp(config, function(err, app) {
     console.log('try this:\ncurl \'http://127.0.0.1:10010/hello?name=Scott&apiKey='+app.credentials[0].key + "\'");
   });
 });
 
+// Use Volos.js management API to create developer and app on Apigee Edge. 
+function createApp(config, cb) {
 
-function createApp(management, cb) {
+  config.user = config.username; // Management.create expects 'user' parameter in config obj
 
-  management.deleteDeveloper(config.devRequest.email, function() {
+  var management = volos.Management.create(config);
 
-    console.log('Creating developer %s', config.devRequest.email);
+  management.deleteDeveloper(info.devRequest.email, function() {
 
-    management.createDeveloper(config.devRequest , function(err, developer) {
+    console.log('Creating developer %s', info.devRequest.email);
+
+    management.createDeveloper(info.devRequest , function(err, developer) {
       if (err) { throw err; }
 
-      console.log('Creating application %s for developer %s', config.appRequest.name, developer.id);
+      console.log('Creating application %s for developer %s', info.appRequest.name, developer.id);
 
-      config.appRequest.developerId = developer.id;
-      management.createApp(config.appRequest, cb);
+      info.appRequest.developerId = developer.id;
+      management.createApp(info.appRequest, cb);
     });
   });
 }
