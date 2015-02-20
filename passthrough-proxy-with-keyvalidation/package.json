@@ -1,0 +1,41 @@
+{
+  "name": "proxy",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "My new Apigee 127 Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "a127-magic": "^0.7.0",
+    "debug": "^2.1.1",
+    "express": "3.x.x",
+    "request": "^2.53.0",
+    "volos-analytics-apigee": "",
+    "volos-analytics-common": "",
+    "volos-analytics-memory": "",
+    "volos-cache-apigee": "",
+    "volos-cache-memory": "",
+    "volos-cache-redis": "",
+    "volos-oauth-apigee": "",
+    "volos-oauth-redis": "",
+    "volos-quota-apigee": "",
+    "volos-quota-memory": "",
+    "volos-quota-redis": "",
+    "volos-spikearrest-memory": ""
+  },
+  "devDependencies": {
+    "should": "4.4.x",
+    "supertest": "0.15.x"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "api": {
+    "name": "proxy",
+    "basePath": "/proxy",
+    "docsPath": "/docs",
+    "main": "app.js"
+  }
+}

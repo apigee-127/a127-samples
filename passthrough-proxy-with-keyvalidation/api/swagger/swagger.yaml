@@ -1,0 +1,78 @@
+swagger: "2.0"
+info:
+  title: Proxy App
+  version: "0.0.1"
+host: localhost
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+x-a127-config:
+  RemoteProxy.key: &apigeeProxyKey CONFIGURED
+  RemoteProxy.uri: &apigeeProxyUri CONFIGURED
+x-a127-services:
+  cache:
+    provider: volos-cache-memory
+    options:
+      name: name
+      ttl: 10000
+  # Note: OAuth API Key validation will be applied manually in the controller, not here.
+  # This is to ensure that network errors do not cause the proxy to deny any requests.
+  oauth:
+    provider: volos-oauth-apigee
+    options:
+      cache: cache
+      key: *apigeeProxyKey
+      uri: *apigeeProxyUri
+paths:
+  /passthrough:
+    x-swagger-router-controller: proxy
+    x-swagger-router-handle-subpaths: true
+    parameters:
+      - name: api_key
+        in: query
+        description: Your API Key
+        required: true
+        type: string
+    get:
+      operationId: proxy
+      responses:
+        default:
+          description: all
+          schema:
+            $ref: "#/definitions/OpenResponse"
+    put:
+      operationId: proxy
+      responses:
+        default:
+          description: all
+          schema:
+            $ref: "#/definitions/OpenResponse"
+    post:
+      operationId: proxy
+      responses:
+        default:
+          description: all
+          schema:
+            $ref: "#/definitions/OpenResponse"
+    delete:
+      operationId: proxy
+      responses:
+        default:
+          description: all
+          schema:
+            $ref: "#/definitions/OpenResponse"
+definitions:
+  OpenResponse:
+    properties: {}
+#securityDefinitions:
+#  oauth:
+#    type: oauth2
+#    scopes:
+#      read: read access
+#    flow: application
+#    tokenUrl: ignored
