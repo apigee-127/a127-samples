@@ -7,7 +7,7 @@ Usage
 1. Change the `proxyBase` property in the [config/default.yaml]() file to the base of your proxy target.
 
 2. Create an Apigee Remote Proxy service named "RemoteProxy" and bind it to the project. (Alternatively, edit your
-[api/swagger/swagger.yaml]() file to point to match your proxy service name and bind that.)
+[api/swagger/swagger.yaml]() file to point to match your proxy service name and bind that.). See the wiki [https://github.com/apigee-127/a127-documentation/wiki/Services]() on how to add Apigee Remote Proxy to your Edge org.
 
 2. Start the app using `a127 project start`.
 
