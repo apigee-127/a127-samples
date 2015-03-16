@@ -33,7 +33,7 @@ function verifyAPIKey(req, next) {
       debug('error: %j', err);
 
       // only return error to client on invalid key
-      if (err.code === 'oauth.v2.InvalidApiKey') {
+      if (err.code === 'access_denied') {
         return next(err);
       }
     }
