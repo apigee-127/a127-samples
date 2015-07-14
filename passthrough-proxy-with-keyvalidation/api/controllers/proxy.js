@@ -18,6 +18,13 @@ module.exports.proxy = function proxy(req, res, next) {
     var proxyUrl = basePath + subPath;
 
     debug('proxying to: %s', proxyUrl);
+
+    // set analyticsInfo on request for our analytics finalizeRecord helper to pick up
+    req.analyticsInfo = {
+      target_url: proxyUrl,
+      target_sent_start_timestamp: Date.now()
+    };
+
     req.pipe(request(proxyUrl)).pipe(res); // proxy all data (headers, query, body)
   });
 

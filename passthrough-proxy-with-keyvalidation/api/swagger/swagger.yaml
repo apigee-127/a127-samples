@@ -15,6 +15,18 @@ x-a127-config:
   RemoteProxy.key: &apigeeProxyKey CONFIGURED
   RemoteProxy.uri: &apigeeProxyUri CONFIGURED
 x-a127-services:
+  analytics:
+    provider: volos-analytics-apigee
+    options:
+      proxy: name
+      bufferSize: 60000
+      flushInterval: 5000
+      batchSize: 500
+      key: *apigeeProxyKey
+      uri: *apigeeProxyUri
+      finalizeRecord:
+        helper: analytics
+        function: finalizeRecord
   cache:
     provider: volos-cache-memory
     options:
@@ -29,7 +41,9 @@ x-a127-services:
       key: *apigeeProxyKey
       uri: *apigeeProxyUri
 paths:
-  /passthrough:
+  /:
+    x-a127-apply:
+      analytics: {}
     x-swagger-router-controller: proxy
     x-swagger-router-handle-subpaths: true
     parameters:
