@@ -16,7 +16,7 @@ a127.init(function(config) {
   app.use(function(err, req, res, next) {
     if (err && typeof err === 'object') {
       Object.defineProperty(err, 'message', { enumerable: true });
-      res.end(JSON.stringify(err));
+      return res.end(JSON.stringify(err));
     }
     next(err);
   });
