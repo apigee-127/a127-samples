@@ -39,8 +39,8 @@ function verifyAPIKey(req, next) {
     if (err) {
       debug('error: %j', err);
 
-      // only return error to client on invalid key
-      if (err.code === 'access_denied') {
+      // only return error to client on invalid key or Invalid ApiKey for given resource
+      if (err.code === 'access_denied' || err.code === 'oauth.v2.InvalidApiKeyForGivenResource') {
         return next(err);
       }
     }
